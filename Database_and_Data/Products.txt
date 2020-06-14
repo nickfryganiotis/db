@@ -1,0 +1,43 @@
+Orange Juice Can 330 ML,HMMYmarket,0.58,4140742,3
+Carbonated Water 250 ML,Perrier,0.68,4124518,3
+Orange Juice Blue Can 1.5 LT,EPSA,1.70,4141987,3
+Tonic Indian 330 ML,Schweppes,0.57,4156092,3
+Red Wine 750 ML,Ktima Chatzimichali,8.55,4010157,3
+White Wine Moschofilero 750 ML,Greek Cellars,7.75,4000312,3
+Whiskey 700 ML,Glenfidich,29.94,4070764,3
+Black Tea With Lemon 450 ML,Arizona,1.14,4170681,3
+Red Wine Special 750 ML,Eas Nemeas,3.70,4020078,3
+Orange Juice Blue Bottle 1.5 LT,Lux,1.63,4142371,3
+Carbonated Mineral Water 800 ML,VOSS,3.07,4120030,3
+Liquor 700 ML,Baileys,17.62,4080061,3
+Apple Cider Bottle 330 ML,Strongbow,1.17,4117935,3
+Red Wine Ayioryitiko 1.5 Lt,HMMYmarket,5.73,4021351,3
+Eggs Medium 12 Pieces,365,1.89,1000537,2
+Greek Yoghurt Low Fat 1 KGR,HMMYmarket,2.29,1193029,2
+Margarine 250 gr,Vitam,1.26,1290328,2
+Eggs Fresh Medium GR 6 Pieces,Chrysa Avga,2.29,1000056,2
+Eggs 795 GR 15 Pieces,Chrysa Avga,3.30,1000547,2
+Condensed Milk Light gr,Nounou-Light,5.88,3160023,2
+Bio Eggs 320 GR 6 Pieces,Vlachakis,3.75,1000431,2
+Butter Soft Unsalted 225 GR,Lurpak,3.62,1270564,2
+Eggs Fresh Large 6 Pieces,Chrysa Avga,2.35,1000148,2
+Eggs Fresh 6 Pieces,HMMYmarket,3.39,1000238,2
+Pizza Dough Fresh 400 GR,Pillsbury,2.76,1670140,2
+Eggs Medium Pieces,HMMYmarket,2.87,1000044,2
+Pizza Dough Fresh Crispy 345 GR,Pillsbury,2.86,1670509,2
+Eggs Large 10 Pieces,HMMYmarket,2.98,1000452,2
+Milk Skimmed 1.5 lt 0.25,MMMilk,2.15,1090930,2
+Beef Thigh Slices 800 GR,HMMYmarket,10.99,0501522,1
+Pork Steak Smoked Slices 480 GR,HMMYmarket,6.69,0520253,1
+Chicken Thigh Slices 700 GR,Nitsiakos,8.17,0570096,1
+Turkey Fillet Slices 750 GR,HMMYmarket,9.77,0580389,1
+Chicken Wings 800 GR,Nitsiakos,3.38,0570098,1
+Chicken Burger 500,Aggelakis,4.50,0570914,1
+Squids 600GR,HMMYmarket,10.50,0850289,1
+Pork Sausages Holland 600 GR,HMMYmarket,4.49,1370211,1
+Pork Thigh,HMMYmarket,12.03,0520991,1
+Sausages Gluten Free 280 GR,Strakas,2.70,1390452,1
+Chicken Schnitzel 560 GR,Nitsiakos,7.43,0576000517,1
+Sausage Spicy 450 GR,Vrekos,5.38,1390194,1
+Pancetta,Farma Fotiadi,6.28,0560132,1
+Sausages Choriatika 360 GR,Moutevelis,4.88,1390153,1
