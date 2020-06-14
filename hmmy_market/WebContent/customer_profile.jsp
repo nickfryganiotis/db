@@ -20,7 +20,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Customer_profile</title>
+<title>Customers_page</title>
 <link rel="stylesheet" href="customer_profile.css">
 <script src="customer_profile.js"></script>
 </head>
@@ -29,28 +29,34 @@
 <h1>Oops, something went wrong!</h1>
 <p>The Database is Empty</p>
 <% }
-else{%>
-	<table>
-	  <tr>
-	    <th>First Name</th>
-	    <th>Last name</th>
-	    <th>City</th>
-	    <th>Age</th>
-	  </tr>
-<% while(rs.next()){
+else{
+	int counter = 0;  
+	while(rs.next()){
 	String first_name=rs.getString("first_name");
 	String last_name = rs.getString("last_name");
 	String city = rs.getString("city");
-	String age = rs.getString("age");
+	String age = rs.getString("age"); 
 %>
+<table>
 <tr>
-    <td><%=first_name %></td>
-    <td><%=last_name%></td>
+    <td>Name:</td>
+    <td id= "<%="customer_name"+String.valueOf(counter)%>"> <%=first_name+" "+last_name %>
+    </td>
+</tr>
+<tr>
+    <td>City:</td>
     <td><%=city%></td>
+</tr>
+<tr>
+    <td>Age:</td>
     <td><%=age%></td>
 </tr>
-	
-<% }
+</table>
+<button type="button" onclick="check_customer(<%=counter%>)">Check Customer</button>	
+<br>
+<br>
+<br>
+<% counter++;}
 }%>
 
 </body>
