@@ -41,3 +41,41 @@ Chicken Schnitzel 560 GR,Nitsiakos,7.43,0576000517,1
 Sausage Spicy 450 GR,Vrekos,5.38,1390194,1
 Pancetta,Farma Fotiadi,6.28,0560132,1
 Sausages Choriatika 360 GR,Moutevelis,4.88,1390153,1
+Dogfood Canned Beef And Chicken 400 gr,Family Friends,0.60,3400393,6
+Catfood Crock & Soft 375 gr,Friskies,1.92,3400042,6
+Catfood Fish  4 X 100 gr,Whiskas,1.98,3402171,6
+Catfood Canned Chicken 400 gr,Whiskas,1.50,3400506,6
+Little Dogs Snacks 115 gr,Purina,1.98,3400513,6
+Dry Catfood Chicken and Vegetables 2 Kg,Friskies,7.16,3400290,6
+Catfood Chicken with Vegetables 400 gr,Friskies,1.10,3400216,6
+Dogfood Canned Beef 400 gr,Pedigree,1.42,3400320,6
+Catfood Salmon and Chicken 85 gr,Gourmet-Gold,0.76,3401934,6
+Dogfood Canned Chicken 1.230 gr,Family Friends,1.49,3400390,6
+Catfood Perle Chicken Fillet 85 gr,Gourmet-Perle,0.85,3400243,6
+Washing Liquid 1 LT,Ajax,2.82,6282309,5
+Liquid Toilet Cleaner Mint Scented 750 ML,Duck,3.10,6283610,5
+Window Cleaner Ovida 750 ML,Ajax,1.98,6280218,5
+Conditioner Ruby Jasmine,Lenor,6.48,6258653,5
+Dish Washing Liquid Cucumber Scented 654 ML,Fairy,3.19,6300323,5
+Detergent Tablets 42 Pieces,Finish-all-in,14.49,6300032,5
+Pure Hygiene 1LT,Klinex,2.99,6280952,5
+Dusting Cloths 20 Pieces,HMMYmarket,2.15,5010686,5
+Window Cleaner 750 ML,Ajax,2.78,6286396,5
+Liquid Clothes Detergent BABY,Arkadi,9.00,6255877,5
+Dish Detergent Action 650 ML,Ava,2.15,6300303,5
+Washing Liquid Regular 1 LT,Ajax,2.64,6282298,5
+Washing Liquid 1 LT,Ajax,2.64,6282301,5
+Cleaning Sponge,Scotch Brite,1.18,5010729,5
+Body Wash Neutral 750 ΜL,Noxzema,5.09,6052664,4
+Hair Dye Set Νο 10,Excellence,10.59,6012626,4
+Diapers Large Nο 4 Economy 25 Pieces,Tena-Slipad,18.95,6120343,4
+Shaver One Use 5 Pieces,Bic-Velver,1.48,6130254,4
+Shaver One Use 4 Pieces,Gillette Blue 3,4.98,6132171,4
+Lip Moisturizer Cherry ,Liposan,2.55,6031681,4
+Hair Shampoo Almond 385 ML,Nature Box,5.30,6000969,4
+Hair Mask Ultimate Repair 300 ΜL,Gliss,7.46,6000473,4
+Hair Dye Semi Set N.8,Palette,5.49,6011211,4
+Hair Dye Set 8.0 Blonde 60 ML,Color Sensation,4.44,6015457,4
+First Aid Bandaids 8 Pieces,Pharmadoct,1.05,6150292,4
+Toothbrush White Now,Aim,4.16,6090351,4
+Hair Repair Oil 100 ML,Pantene,8.79,6000573,4
