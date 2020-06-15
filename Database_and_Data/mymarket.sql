@@ -41,7 +41,6 @@ CREATE TABLE market.product(
             product_name VARCHAR(50),
             price DOUBLE,
             brand_name VARCHAR(20),
-            first_transaction DATETIME DEFAULT CURRENT_TIMESTAMP,
             categoryID INT,
             PRIMARY KEY(barcode),
             FOREIGN KEY(categoryID) REFERENCES category(categoryID));
@@ -65,7 +64,7 @@ CREATE TABLE market.offers(
             FOREIGN KEY(barcode) REFERENCES product(barcode));
             
 CREATE TABLE market.price_history(
-			start_date DATETIME,
+			start_date DATETIME DEFAULT CURRENT_TIMESTAMP,
             barcode VARCHAR(20),
             price DOUBLE,
             end_date DATETIME,
@@ -73,7 +72,7 @@ CREATE TABLE market.price_history(
             FOREIGN KEY(barcode) REFERENCES product(barcode));
             
 CREATE TABLE market.product_transaction(
-			date_time DATE,
+			date_time DATETIME,
             card_number INT,
             total_amount DOUBLE DEFAULT 0.0,
             payment_method CHAR(4) CHECK (payment_method in ('cash', 'card') OR NULL),
@@ -85,7 +84,7 @@ CREATE TABLE market.product_transaction(
 
 CREATE TABLE market.product_contains(
 			card_number INT,
-            date_time DATE,
+            date_time DATETIME,
             barcode VARCHAR(20),
             pieces INT,
             PRIMARY KEY(card_number, date_time, barcode),
@@ -94,38 +93,57 @@ CREATE TABLE market.product_contains(
             
 
 
-
 CREATE TRIGGER customer_age_calc BEFORE INSERT ON customer 
 	FOR EACH ROW SET NEW.age = YEAR(NOW()) - YEAR(NEW.date_of_birth);
     
+DELIMITER $$
+CREATE TRIGGER update_transaction_contains
+AFTER INSERT ON product_contains FOR EACH ROW
+BEGIN
+	DECLARE x DOUBLE;
+    SELECT price INTO @x FROM price_history WHERE (barcode = NEW.barcode AND NEW.date_time >= start_date);
+    UPDATE product_transaction
+    SET total_amount = CAST(total_amount + @x*(CAST(NEW.pieces AS DOUBLE)) AS DECIMAL(10,2))
+    WHERE product_transaction.date_time = NEW.date_time AND product_transaction.card_number = NEW.card_number;
+    UPDATE product_transaction
+    SET total_pieces = total_pieces + NEW.pieces
+    WHERE product_transaction.date_time = NEW.date_time AND product_transaction.card_number = NEW.card_number;
+END;
+$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE TRIGGER auto_update_price
+BEFORE INSERT ON price_history FOR EACH ROW
+BEGIN
+	IF NEW.end_date = NULL
+    THEN
+		UPDATE price_history
+		SET end_date = NEW.start_date
+        WHERE (NEW.barcode = barcode AND end_date = NULL);
+        
+        UPDATE product
+        SET price = NEW.price
+        WHERE (barcode = NEW.barcode);
+	END IF;
+END; 
+$$
+DELIMITER ;
+    
 
 
-LOAD DATA INFILE 'C:/Users/user/Desktop/Customer.txt' INTO TABLE customer FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' (first_name,last_name,points,street,address_number,postal_code,city,family_members,pet,phone_number,date_of_birth);
+LOAD DATA INFILE 'C:/Users/user/Desktop/Customer.txt' INTO TABLE customer FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n' (first_name,last_name,points,street,address_number,postal_code,city,family_members,pet,phone_number,date_of_birth);
 INSERT INTO category (category_name) VALUES ('fresh products');
 INSERT INTO category (category_name) VALUES ('chilled products');
 INSERT INTO category (category_name) VALUES ('drinks');
 INSERT INTO category (category_name) VALUES ('toiletries');
 INSERT INTO category (category_name) VALUES ('homeware');
 INSERT INTO category (category_name) VALUES ('pet products');
-LOAD DATA INFILE 'C:/Users/user/Desktop/Store.txt' INTO TABLE store FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' (street,address_number,postal_code,city,size,operating_hours);
-LOAD DATA INFILE 'C:/Users/user/Desktop/Telephone.txt' INTO TABLE telephone FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"';
-LOAD DATA INFILE 'C:/Users/user/Desktop/Products.txt' INTO TABLE product FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' (product_name,brand_name,price,barcode,categoryID,first_transaction);
-LOAD DATA INFILE 'C:/Users/user/Desktop/Provides.txt' INTO TABLE provides FIELDS TERMINATED BY ',' (storeID, categoryID);
-LOAD DATA INFILE 'C:/Users/user/Desktop/Offers.txt' INTO TABLE offers FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"';
-LOAD DATA INFILE 'C:/Users/user/Desktop/Price_history.txt' INTO TABLE price_history FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (start_date, barcode, price, @var) SET end_date = NULLIF(@var, 0000-00-00);
+LOAD DATA INFILE 'C:/Users/user/Desktop/Store.txt' INTO TABLE store FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n' (street,address_number,postal_code,city,size,operating_hours);
+LOAD DATA INFILE 'C:/Users/user/Desktop/Telephone.txt' INTO TABLE telephone FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n';
+LOAD DATA INFILE 'C:/Users/user/Desktop/Product.txt' INTO TABLE product FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n' (product_name,brand_name,price,barcode,categoryID);
+LOAD DATA INFILE 'C:/Users/user/Desktop/Provides.txt' INTO TABLE provides FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (storeID, categoryID);
+LOAD DATA INFILE 'C:/Users/user/Desktop/Offers.txt' INTO TABLE offers FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n';
+LOAD DATA INFILE 'C:/Users/user/Desktop/Price_history1.txt' INTO TABLE price_history FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (start_date, barcode, price, end_date);
+LOAD DATA INFILE 'C:/Users/user/Desktop/Price_history2.txt' INTO TABLE price_history FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (start_date, barcode, price);
 
-DELIMITER $$
-CREATE TRIGGER hard
-AFTER INSERT ON product_contains FOR EACH ROW
-Begin
-	DECLARE x DOUBLE;
-    SELECT price INTO @x FROM product WHERE barcode = NEW.barcode;
-    UPDATE product_transaction
-    SET total_amount = CAST(total_amount + @x*(CAST(NEW.pieces AS DOUBLE)) AS DECIMAL(10,2))
-    WHERE product_transaction.date_time = NEW.date_time AND product_transaction.card_number = NEW.card_number;
-END;
-$$
-DELIMITER ;
-
-DROP TRIGGER hard;
-TRUNCATE TABLE product_CONTAINS;
