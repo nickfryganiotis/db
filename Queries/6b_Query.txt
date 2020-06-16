@@ -1,0 +1,11 @@
+CALCULATE 10 MOST POPULAR PRODUCTS DEPENDING ON CUSTOMER, GIVEN FIRST AND LAST NAME
+-----------------------------------------------------------------------------------
+SELECT product_name, COUNT(*) AS magnitude 
+FROM (SELECT product.product_name
+	FROM product_contains AS T, product 
+	WHERE (card_number = (SELECT card_number FROM customer WHERE (first_name = 'Rick' AND last_name = 'Sanchez')) 
+			AND T.barcode = product.barcode)) AS K 
+GROUP BY product_name
+ORDER BY magnitude DESC
+LIMIT 10;
+-------------------------------------------------------------------------------------

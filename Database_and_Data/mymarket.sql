@@ -28,7 +28,7 @@ CREATE TABLE market.store(
 CREATE TABLE market.telephone(
 			storeID INT,
             telephone_number NUMERIC(10,0) NOT NULL,
-            FOREIGN KEY (storeID) REFERENCES store(storeID),
+            FOREIGN KEY (storeID) REFERENCES store(storeID) ON UPDATE CASCADE,
             PRIMARY KEY (storeID, telephone_number));
             
 CREATE TABLE market.category(
@@ -43,16 +43,14 @@ CREATE TABLE market.product(
             brand_name VARCHAR(20),
             categoryID INT,
             PRIMARY KEY(barcode),
-            FOREIGN KEY(categoryID) REFERENCES category(categoryID));
-            
-
+            FOREIGN KEY(categoryID) REFERENCES category(categoryID) ON UPDATE CASCADE);
             
 CREATE TABLE market.provides(
 			storeID INT,
             categoryID INT,
             PRIMARY KEY(storeID, categoryID),
-            FOREIGN KEY(storeID) REFERENCES store(storeID),
-            FOREIGN KEY(categoryID) REFERENCES category(categoryID));
+            FOREIGN KEY(storeID) REFERENCES store(storeID) ON UPDATE CASCADE,
+            FOREIGN KEY(categoryID) REFERENCES category(categoryID) ON UPDATE CASCADE);
             
 CREATE TABLE market.offers(
 			storeID INT,
@@ -60,8 +58,8 @@ CREATE TABLE market.offers(
             alley_number SMALLINT,
             shelf_number SMALLINT,
             PRIMARY KEY(storeID, barcode),
-            FOREIGN KEY(storeID) REFERENCES store(storeID),
-            FOREIGN KEY(barcode) REFERENCES product(barcode));
+            FOREIGN KEY(storeID) REFERENCES store(storeID) ON UPDATE CASCADE,
+            FOREIGN KEY(barcode) REFERENCES product(barcode) ON UPDATE CASCADE);
             
 CREATE TABLE market.price_history(
 			start_date DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -69,7 +67,7 @@ CREATE TABLE market.price_history(
             price DOUBLE,
             end_date DATETIME,
             PRIMARY KEY(start_date, barcode),
-            FOREIGN KEY(barcode) REFERENCES product(barcode));
+            FOREIGN KEY(barcode) REFERENCES product(barcode) ON UPDATE CASCADE);
             
 CREATE TABLE market.product_transaction(
 			date_time DATETIME,
@@ -79,8 +77,8 @@ CREATE TABLE market.product_transaction(
             total_pieces INT DEFAULT 0,
             storeID INT,
             PRIMARY KEY(date_time, card_number),
-            FOREIGN KEY (storeID) REFERENCES store(storeID),
-            FOREIGN KEY(card_number) REFERENCES customer(card_number));
+            FOREIGN KEY (storeID) REFERENCES store(storeID) ON UPDATE CASCADE,
+            FOREIGN KEY(card_number) REFERENCES customer(card_number) ON UPDATE CASCADE);
 
 CREATE TABLE market.product_contains(
 			card_number INT,
@@ -88,8 +86,8 @@ CREATE TABLE market.product_contains(
             barcode VARCHAR(20),
             pieces INT,
             PRIMARY KEY(card_number, date_time, barcode),
-            FOREIGN KEY(card_number, date_time) REFERENCES product_transaction(card_number, date_time),
-            FOREIGN KEY(barcode) REFERENCES product(barcode));
+            FOREIGN KEY(card_number, date_time) REFERENCES product_transaction(card_number, date_time) ON UPDATE CASCADE,
+            FOREIGN KEY(barcode) REFERENCES product(barcode) ON UPDATE CASCADE);
             
 
 
@@ -131,8 +129,6 @@ $$
 DELIMITER ;
     
 
-
-
 LOAD DATA INFILE 'C:/Users/user/Desktop/Customer.txt' INTO TABLE customer FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n' (first_name,last_name,points,street,address_number,postal_code,city,family_members,pet,phone_number,date_of_birth);
 LOAD DATA INFILE 'C:/Users/user/Desktop/Category.txt' INTO TABLE category FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n' (category_name);
 LOAD DATA INFILE 'C:/Users/user/Desktop/Store.txt' INTO TABLE store FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n' (street,address_number,postal_code,city,size,operating_hours);
@@ -144,4 +140,15 @@ LOAD DATA INFILE 'C:/Users/user/Desktop/Price_history1.txt' INTO TABLE price_his
 LOAD DATA INFILE 'C:/Users/user/Desktop/Price_history2.txt' INTO TABLE price_history FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (start_date, barcode, price);
 LOAD DATA INFILE 'C:/Users/user/Desktop/Product_transaction.txt' INTO TABLE product_transaction FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (card_number, storeID, payment_method, date_time);
 LOAD DATA INFILE 'C:/Users/user/Desktop/Product_contains.txt' INTO TABLE product_contains FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (card_number,date_time, barcode, pieces);
+
+
+
+SELECT product_name, COUNT(*) AS magnitude 
+FROM (SELECT product.product_name
+	FROM product_contains AS T, product 
+	WHERE (card_number = (SELECT card_number FROM customer WHERE (first_name = 'Rick' AND last_name = 'Sanchez')) 
+			AND T.barcode = product.barcode)) AS K 
+GROUP BY product_name
+ORDER BY magnitude DESC
+LIMIT 10;
 
