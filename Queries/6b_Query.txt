@@ -1,5 +1,5 @@
 CALCULATE 10 MOST POPULAR PRODUCTS DEPENDING ON CUSTOMER, GIVEN FIRST AND LAST NAME
------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
 SELECT product_name, COUNT(*) AS magnitude 
 FROM (SELECT product.product_name
 	FROM product_contains AS T, product 
@@ -8,16 +8,16 @@ FROM (SELECT product.product_name
 GROUP BY product_name
 ORDER BY magnitude DESC
 LIMIT 10;
-___________________________________________________________________________________
+_____________________________________________________________________________________
 CALCULATE WHICH STORES A CUSTOMER HAS VISITED
------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
 SELECT DISTINCT S.street, S.address_number, S.postal_code, S.city
 FROM product_transaction as T, store as S
 WHERE (T.card_number = (SELECT card_number FROM customer WHERE (first_name = 'Rick' AND last_name = 'Sanchez')) 
 			AND S.storeID =T.storeID);
-____________________________________________________________________________________
+_____________________________________________________________________________________
 CALCULATE HOUR INTERVALS IN WHICH A CUSTOMER VISITS A STORE
-------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------
 SELECT COUNT(*) AS total_transactions, HOUR(T.date_time) AS hour_interval
 FROM product_transaction AS T
 WHERE T.card_number = (
@@ -25,4 +25,18 @@ WHERE T.card_number = (
         FROM customer
 		WHERE first_name = 'Rick' AND last_name = 'Sanchez')
 GROUP BY HOUR(T.date_time);
-____________________________________________________________________________________
+_____________________________________________________________________________________
+CALCULATE AVERAGE MONEY SPENT WEEKLY
+-------------------------------------------------------------------------------------
+SELECT AVG(total_amount), WEEK(date_time)
+FROM product_transaction
+WHERE (card_number = (SELECT card_number FROM customer WHERE (first_name = 'Rick' AND last_name = 'Sanchez')))
+GROUP BY WEEK(date_time);
+_____________________________________________________________________________________
+CALCULATE AVERAGE MONEY SPENT MONTHLY
+-------------------------------------------------------------------------------------
+SELECT AVG(total_amount), MONTH(date_time)
+FROM product_transaction
+WHERE (card_number = (SELECT card_number FROM customer WHERE (first_name = 'Rick' AND last_name = 'Sanchez')))
+GROUP BY MONTH(date_time);
+_____________________________________________________________________________________
