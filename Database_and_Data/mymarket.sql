@@ -1,3 +1,5 @@
+CREATE SCHEMA IF NOT EXISTS market;
+USE market;
 SET GLOBAL time_zone = '+3:00';
 CREATE TABLE market.customer(
 			card_number INT AUTO_INCREMENT,
@@ -141,14 +143,4 @@ LOAD DATA INFILE 'C:/Users/user/Desktop/Price_history2.txt' INTO TABLE price_his
 LOAD DATA INFILE 'C:/Users/user/Desktop/Product_transaction.txt' INTO TABLE product_transaction FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (card_number, storeID, payment_method, date_time);
 LOAD DATA INFILE 'C:/Users/user/Desktop/Product_contains.txt' INTO TABLE product_contains FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (card_number,date_time, barcode, pieces);
 
-
-
-SELECT product_name, COUNT(*) AS magnitude 
-FROM (SELECT product.product_name
-	FROM product_contains AS T, product 
-	WHERE (card_number = (SELECT card_number FROM customer WHERE (first_name = 'Rick' AND last_name = 'Sanchez')) 
-			AND T.barcode = product.barcode)) AS K 
-GROUP BY product_name
-ORDER BY magnitude DESC
-LIMIT 10;
 
