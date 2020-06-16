@@ -16,3 +16,13 @@ FROM product_transaction as T, store as S
 WHERE (T.card_number = (SELECT card_number FROM customer WHERE (first_name = 'Rick' AND last_name = 'Sanchez')) 
 			AND S.storeID =T.storeID);
 ____________________________________________________________________________________
+CALCULATE HOUR INTERVALS IN WHICH A CUSTOMER VISITS A STORE
+------------------------------------------------------------------------------------
+SELECT COUNT(*) AS total_transactions, HOUR(T.date_time) AS hour_interval
+FROM product_transaction AS T
+WHERE T.card_number = (
+		SELECT card_number
+        FROM customer
+		WHERE first_name = 'Rick' AND last_name = 'Sanchez')
+GROUP BY HOUR(T.date_time);
+____________________________________________________________________________________
