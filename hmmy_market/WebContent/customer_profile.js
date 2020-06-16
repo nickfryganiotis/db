@@ -13,5 +13,6 @@ function check_customer(counter){
 	customer_name[2] = customer_name[2].replace(/(\r\n|\n|\r)/gm, "");
 	document.cookie = "customer_fname="+customer_name[1];
 	document.cookie = "customer_lname="+customer_name[2];
+	window.location = "user.jsp";
 }
 
