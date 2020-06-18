@@ -1,7 +1,24 @@
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  max-width: 300px;
+  max-width: 800px;
+  position: absolute;
+  left: 30px;
+  top: 30px;
   margin: auto;
-  text-align: center;
+  /*text-align: center;*/
   font-family: arial;
+}
+.container1{
+	max-width: 1000px;
+  position: absolute;
+	left: 500px;
+  top: 10px;
+}
+
+
+.container2{
+	max-width: 1000px;
+  position: absolute;
+	left: 500px;
+  top: 1200px;
 }

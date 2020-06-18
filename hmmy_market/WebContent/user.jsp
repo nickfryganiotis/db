@@ -14,7 +14,10 @@ cookies = request.getCookies();
 	String connectionURL = "jdbc:mysql://localhost:3306/market";
 	Connection connection = null;
 	Statement statement = null;	
-	ResultSet rs = null;
+	ResultSet rs_1 = null;
+	ResultSet rs_2 = null;
+	ResultSet rs_3 = null;
+	ResultSet rs_4 = null;
 %>
 <html>
 <head>
@@ -25,6 +28,7 @@ cookies = request.getCookies();
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<script src = user.js></script>
 </head>
 <body>
 <%if(cookies == null) {%>
@@ -38,8 +42,8 @@ cookies = request.getCookies();
          Class.forName("com.mysql.jdbc.Driver").newInstance();
          connection = DriverManager.getConnection(connectionURL, username,password);
          statement = connection.createStatement();
-         String sqlSelect = "SELECT phone_number,date_of_birth,street,address_number,postal_code,pet,points FROM customer WHERE first_name="+"'"+customer_fname+"'" + "AND last_name="+"'"+customer_lname+"'"+";";
-         rs = statement.executeQuery(sqlSelect);
+         String sqlSelect_1 = "SELECT phone_number,date_of_birth,street,address_number,postal_code,pet,points FROM customer WHERE first_name="+"'"+customer_fname+"'" + "AND last_name="+"'"+customer_lname+"'"+";";
+         rs_1 = statement.executeQuery(sqlSelect_1);
          String phone_number = null;
          String date_of_birth = null;
          String street = null;
@@ -48,28 +52,39 @@ cookies = request.getCookies();
          String pet = null;
          String points = null;
          
-         while(rs.next()){
-        	 phone_number = rs.getString("phone_number");
-        	 date_of_birth = rs.getString("date_of_birth");
-        	 street = rs.getString("street");
-        	 address_number = rs.getString("address_number");
-        	 postal_code = rs.getString("postal_code");
-        	 pet = rs.getString("pet");
-        	 points = rs.getString("points");
+         while(rs_1.next()){
+        	 phone_number = rs_1.getString("phone_number");
+        	 date_of_birth = rs_1.getString("date_of_birth");
+        	 street = rs_1.getString("street");
+        	 address_number = rs_1.getString("address_number");
+        	 postal_code = rs_1.getString("postal_code");
+        	 pet = rs_1.getString("pet");
+        	 points = rs_1.getString("points");
          }
          if(pet=="null"){
         	 System.out.println("oh");
          }
-         rs = null;
-         sqlSelect = "SELECT product_name, COUNT(*) AS magnitude FROM (SELECT product.product_name FROM product_contains AS T, product  WHERE (card_number = (SELECT card_number FROM customer WHERE (first_name ="+"'"+customer_fname+"'"+" AND last_name = "+"'"+customer_lname+"'"+")) 	AND T.barcode = product.barcode)) AS K GROUP BY product_name ORDER BY magnitude DESC LIMIT 10;";
-         rs = statement.executeQuery(sqlSelect);
+         String sqlSelect_2 = "SELECT product_name, COUNT(*) AS magnitude FROM (SELECT product.product_name FROM product_contains AS T, product  WHERE (card_number = (SELECT card_number FROM customer WHERE (first_name ="+"'"+customer_fname+"'"+" AND last_name = "+"'"+customer_lname+"'"+")) 	AND T.barcode = product.barcode)) AS K GROUP BY product_name ORDER BY magnitude DESC LIMIT 10;";
+         rs_2 = statement.executeQuery(sqlSelect_2);
      
          ArrayList<String> product_name = new ArrayList<String>();
          ArrayList<Integer> magnitude = new ArrayList<>();
-         while(rs.next()){
-        	 product_name.add(rs.getString("product_name"));
-        	 magnitude.add(rs.getInt("magnitude"));
+         while(rs_2.next()){
+        	 product_name.add(rs_2.getString("product_name"));
+        	 magnitude.add(rs_2.getInt("magnitude"));
          }
+         
+                
+         String sqlSelect_4 = "SELECT COUNT(*) AS total_transactions, HOUR(T.date_time) AS hour_interval FROM product_transaction AS T WHERE T.card_number = (SELECT card_number FROM customer WHERE first_name ="+"'"+customer_fname+"'"+ "AND last_name ="+"'"+customer_lname+"'"+") GROUP BY HOUR(T.date_time);";
+         rs_4 = statement.executeQuery(sqlSelect_4);
+         
+         ArrayList<Integer> total_transactions = new ArrayList<>();
+         while(rs_4.next()){
+        	 total_transactions.add(rs_4.getInt("total_transactions"));
+         }
+         
+         String sqlSelect_3 = "SELECT DISTINCT S.street, S.address_number, S.postal_code, S.city FROM product_transaction as T, store as S WHERE (T.card_number = (SELECT card_number FROM customer WHERE (first_name ="+"'"+customer_fname+"'" +"AND last_name ="+"'"+customer_lname+"'"+"))  AND S.storeID =T.storeID);";
+         rs_3 = statement.executeQuery(sqlSelect_3);
          %>
          <div class="card">
             <h1><%=customer_fname+" "+customer_lname%></h1>
@@ -97,42 +112,49 @@ cookies = request.getCookies();
             	%>
             	 <p><%="Points:   " + " " +points  %>
             <% }%>
-            
+                 <%int count=0;
+                 %>
+            	 <% while(rs_3.next()){
+            		 if(count==0){%>
+            			 <p>Visits:</p>
+            			 <ul>
+            		 <% }%>
+            	     
+                     <li><%=rs_3.getString("street")+" "+rs_3.getString("address_number")+", "+rs_3.getString("postal_code")%></li>
+            <%count++;}
+            	 if(count!=0){
+            	 %>
+            	 </ul><%} %>
+           
          </div>
-         <div class="container">
-               <canvas id="myChart"></canvas>
+         <div class="container1">
+               <canvas id="myChart1"></canvas>
                <script type="text/javascript"> 
-               var magnitude = <%= magnitude %>;
-               var product_name=<%="'"+product_name+"'"%>
-               product_name = product_name.replace(/(\[|\])/gm, "");
-               product_name = product_name.split(",");
-               console.log(product_name);
-               var lcolour1=[];
-               var ldata1=[];
-               var lprod = [];
-               for(var i=0; i<magnitude.length; i++){
-                   lcolour1.push('rgba(255, 99, 132, 0.6)') ;
-                   ldata1.push(magnitude[i]);
-                   lprod.push(product_name[i]);
-               }
-               let myChart=document.getElementById('myChart').getContext('2d');
-               let massPopChart = new Chart(myChart, {
-                   type:'bar',
-                   data:{
-                       labels:lprod,
-                   datasets:[
-                       {
-                           label:' (MWh)',
-                           data:magnitude,
-                           backgroundColor:lcolour1
-                       }
-            
-                     ],
-                       
-               }
-               })
+               var keys=<%="'"+product_name+"'"%>
+               keys = keys.replace(/(\[|\])/gm, "");
+               keys = keys.split(",");
+               var values = <%= magnitude %>;
+               var label = "Frequency";
+               var iter = "1";
+               diagrams(keys,values,label,iter);
                </script>
             </div>
+         <div class="container2">
+         <canvas id="myChart2"></canvas>
+               <script type="text/javascript"> 
+               var keys=["1","2","3","4","5","6","7","8","9","10","11","12"];
+               var values = <%= total_transactions %>;
+               if(values.length<12){
+            	   for(j=values.length; j<12; j++){
+            		   values[j]=0;
+            	   }
+               }
+               var label = "Total Transaction";
+               var iter = "2";
+               diagrams(keys,values,label,iter);
+               </script>
+            </div>
+         </div>
 <%} %>
 </body>
 </html>

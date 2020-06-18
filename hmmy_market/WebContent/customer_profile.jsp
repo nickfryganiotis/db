@@ -7,7 +7,7 @@
 	String connectionURL = "jdbc:mysql://localhost:3306/market";
 	Connection connection = null;
 	Statement statement = null;	
-	ResultSet rs = null;
+	ResultSet rs_1 = null;
 %>
 <%
     String username = "root";
@@ -16,7 +16,7 @@
 	connection = DriverManager.getConnection(connectionURL, username,password);
 	statement = connection.createStatement();
 	String sqlSelect = "SELECT first_name,last_name,city,age FROM customer;";
-	rs = statement.executeQuery(sqlSelect);
+	rs_1 = statement.executeQuery(sqlSelect);
 %>
 <html>
 <head>
@@ -26,17 +26,17 @@
 <script src="customer_profile.js"></script>
 </head>
 <body>
-<%if(rs==null){ %>
+<%if(rs_1==null){ %>
 <h1>Oops, something went wrong!</h1>
 <p>The Database is Empty</p>
 <% }
 else{
 	int counter = 0;  
-	while(rs.next()){
-	String first_name=rs.getString("first_name");
-	String last_name = rs.getString("last_name");
-	String city = rs.getString("city");
-	String age = rs.getString("age"); 
+	while(rs_1.next()){
+	String first_name=rs_1.getString("first_name");
+	String last_name = rs_1.getString("last_name");
+	String city = rs_1.getString("city");
+	String age = rs_1.getString("age"); 
 %>
 <table>
 <tr>
