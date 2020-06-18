@@ -9,7 +9,7 @@
   font-family: arial;
 }
 .container1{
-	max-width: 1000px;
+	width: 600px;
   position: absolute;
 	left: 500px;
   top: 10px;
@@ -17,8 +17,21 @@
 
 
 .container2{
-	max-width: 1000px;
+  width: 400px;
   position: absolute;
-	left: 500px;
-  top: 1200px;
+	left: 10px;
+  top: 400px;
+}
+
+.container3{
+  width: 400px;
+  position: absolute;
+	left: 450px;
+  top: 400px;
+
+}.container4{
+  width: 400px;
+  position: absolute;
+	left: 900px;
+  top: 400px;
 }

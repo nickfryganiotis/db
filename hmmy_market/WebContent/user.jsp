@@ -18,6 +18,8 @@ cookies = request.getCookies();
 	ResultSet rs_2 = null;
 	ResultSet rs_3 = null;
 	ResultSet rs_4 = null;
+	ResultSet rs_5 = null;
+	ResultSet rs_6 = null;
 %>
 <html>
 <head>
@@ -79,10 +81,29 @@ cookies = request.getCookies();
          rs_4 = statement.executeQuery(sqlSelect_4);
          
          ArrayList<Integer> total_transactions = new ArrayList<>();
+         ArrayList<Integer> hours = new ArrayList<>();
          while(rs_4.next()){
+        	 hours.add(rs_4.getInt("hour_interval"));
         	 total_transactions.add(rs_4.getInt("total_transactions"));
          }
          
+         String sqlSelect_5 = "SELECT AVG(total_amount), WEEK(date_time) FROM product_transaction WHERE (card_number = (SELECT card_number FROM customer WHERE (first_name ="+"'"+ customer_fname+"'"+" AND last_name ="+"'"+customer_lname+"'"+")))  GROUP BY WEEK(date_time);";
+         rs_5 = statement.executeQuery(sqlSelect_5);
+         ArrayList<Integer> average_per_week = new ArrayList<>();
+         ArrayList<Integer> weeks = new ArrayList<>();
+         while(rs_5.next()){
+        	 average_per_week.add(rs_5.getInt("AVG(total_amount)"));
+        	 weeks.add(rs_5.getInt("WEEK(date_time)"));
+         }
+         
+         String sqlSelect_6 = "SELECT AVG(total_amount), MONTH(date_time) FROM product_transaction WHERE (card_number = (SELECT card_number FROM customer WHERE (first_name ="+"'"+customer_fname+"'"+ "AND last_name ="+ "'"+customer_lname+"'"+"))) GROUP BY MONTH(date_time);";
+         rs_6 = statement.executeQuery(sqlSelect_6);
+         ArrayList<Integer> average_per_month = new ArrayList<>();
+         ArrayList<Integer> months = new ArrayList<>();
+         while(rs_6.next()){
+        	 average_per_month.add(rs_6.getInt("AVG(total_amount)"));
+        	 months.add(rs_6.getInt("MONTH(date_time)"));
+         }
          String sqlSelect_3 = "SELECT DISTINCT S.street, S.address_number, S.postal_code, S.city FROM product_transaction as T, store as S WHERE (T.card_number = (SELECT card_number FROM customer WHERE (first_name ="+"'"+customer_fname+"'" +"AND last_name ="+"'"+customer_lname+"'"+"))  AND S.storeID =T.storeID);";
          rs_3 = statement.executeQuery(sqlSelect_3);
          %>
@@ -142,19 +163,53 @@ cookies = request.getCookies();
          <div class="container2">
          <canvas id="myChart2"></canvas>
                <script type="text/javascript"> 
-               var keys=["1","2","3","4","5","6","7","8","9","10","11","12"];
-               var values = <%= total_transactions %>;
-               if(values.length<12){
-            	   for(j=values.length; j<12; j++){
-            		   values[j]=0;
-            	   }
-               }
+               var hours=<%=hours%>;
+               var total_transactions= <%=total_transactions %>;
+               var keys=Array.from(Array(12), (_, i) => i + 1);
+               keys.map(String);
+               var values = new Array(12).fill(0);
+               for(j=0; j<total_transactions.length; j++){
+            		values[hours[j]-1] = total_transactions[j];            	   
+               } 
                var label = "Total Transaction";
                var iter = "2";
                diagrams(keys,values,label,iter);
                </script>
             </div>
-         </div>
+           <div class="container3">
+           <canvas id="myChart3"></canvas>
+               <script type="text/javascript"> 
+               var weeks=<%=weeks%>;
+               var average_per_week = <%=average_per_week %>;
+               var keys = Array.from(Array(52), (_, i) => i + 1);
+               keys.map(String);
+               var values = new Array(52).fill(0);
+               for(j=0; j<average_per_week.length; j++){
+            	   if(weeks[j]<53){
+            		   values[weeks[j]-1] = average_per_week[j];
+            	   }
+               } 
+               var label = "Avergage Per Week";
+               var iter = "3";
+               diagrams(keys,values,label,iter);
+               </script>
+              </div>
+              <div class="container4">
+              <canvas id="myChart4"></canvas>
+               <script type="text/javascript"> 
+               var months=<%=months%>;
+               var average_per_month= <%=average_per_month %>;
+               var keys=Array.from(Array(12), (_, i) => i + 1);
+               keys.map(String);
+               var values = new Array(12).fill(0);
+               for(j=0; j<average_per_month.length; j++){
+            		values[months[j]-1] = average_per_month[j];            	   
+               } 
+               var label = "Average Per Month";
+               var iter = "4";
+               diagrams(keys,values,label,iter);
+               </script>
+            </div>
 <%} %>
 </body>
 </html>
