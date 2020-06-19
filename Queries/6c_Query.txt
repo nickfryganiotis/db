@@ -1,5 +1,5 @@
 THE FOLLOWING QUERY RETURNS THE NAMES OF THE MOST BUYED PRODUCT PAIRS AND THE TIMES THEY ARE BOUGHT TOGETHER
------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------------------------------
 SELECT pro1, pro2, times_bought_together
 FROM(
 	SELECT c.original AS c1 , c.bought_with AS c2, count(*) as times_bought_together
@@ -15,4 +15,10 @@ FROM(
 	ON d.barcode != e.barcode) AS zevgara
 WHERE dimakis.c1 = zevgara.bar1 AND dimakis.c2 = zevgara.bar2
 ORDER BY times_bought_together DESC;
-_____________________________________________________________________________________________________________
+____________________________________________________________________________________________________________________________________________________
+THE FOLLOWING QUERY RETURN THE MOST POPULAR POSITIONS OF PRODUCTS IN A STORE, NAMELY ALLEY AND SHELF NUMBERS AS WELL AS THE FREQUENCY OF EVERY PAIR 
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+SELECT alley_number, shelf_number, count(*) AS times_together
+FROM offers
+GROUP BY alley_number, shelf_number
+ORDER BY times_together DESC;
