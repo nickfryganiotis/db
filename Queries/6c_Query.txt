@@ -1,0 +1,18 @@
+THE FOLLOWING QUERY RETURNS THE NAMES OF THE MOST BUYED PRODUCT PAIRS AND THE TIMES THEY ARE BOUGHT TOGETHER
+-----------------------------------------------------------------------------------------------------------
+SELECT pro1, pro2, times_bought_together
+FROM(
+	SELECT c.original AS c1 , c.bought_with AS c2, count(*) as times_bought_together
+	FROM(
+		SELECT a.barcode as original, b.barcode as bought_with
+		FROM market.product_contains a
+		INNER JOIN market.product_contains b
+		ON a.date_time = b.date_time AND a.card_number = b.card_number AND a.barcode != b.barcode) AS c
+	GROUP BY c.original, c.bought_with) AS dimakis,
+	(SELECT d.product_name as pro1, e.product_name as pro2, d.barcode as bar1, e.barcode as bar2
+	FROM product d
+	INNER JOIN product e
+	ON d.barcode != e.barcode) AS zevgara
+WHERE dimakis.c1 = zevgara.bar1 AND dimakis.c2 = zevgara.bar2
+ORDER BY times_bought_together DESC;
+_____________________________________________________________________________________________________________
