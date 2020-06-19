@@ -98,8 +98,7 @@ CREATE TABLE market.product_contains(
 CREATE TRIGGER customer_age_calc BEFORE INSERT ON customer 
 	FOR EACH ROW SET NEW.age = YEAR(NOW()) - YEAR(NEW.date_of_birth);
     
-#CREATE TRIGGER hatchiko BEFORE INSERT ON product_contains
-#	FOR EACH ROW SET NEW.price_bought = (SELECT price FROM price_history WHERE (barcode = NEW.barcode AND NEW.date_time BETWEEN start_date AND IFNULL(end_date, '2020-12-31 00-00-00')));
+
 
 CREATE TRIGGER sologelato BEFORE INSERT ON product_contains
 	FOR EACH ROW SET NEW.price_bought = (SELECT price FROM price_history WHERE (barcode = NEW.barcode AND start_date <= NEW.date_time AND IFNULL(end_date, '2020-12-31 00-00-00') >= NEW.date_time));
@@ -150,6 +149,4 @@ LOAD DATA INFILE 'C:/Users/user/Desktop/Price_history1.txt' INTO TABLE price_his
 LOAD DATA INFILE 'C:/Users/user/Desktop/Price_history2.txt' INTO TABLE price_history FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (start_date, barcode, price);
 LOAD DATA INFILE 'C:/Users/user/Desktop/Product_transaction.txt' INTO TABLE product_transaction FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (card_number, storeID, payment_method, date_time);
 LOAD DATA INFILE 'C:/Users/user/Desktop/Product_contains.txt' INTO TABLE product_contains FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (card_number,date_time, barcode, pieces);
-
-
 

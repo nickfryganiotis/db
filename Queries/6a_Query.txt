@@ -1,0 +1,34 @@
+THIS QUERY IF NO CATEGORY IS GIVEN AS A FILTER. THE FILTERS ARE CONTAINED IN {} , WHICH SHOULD BE REMOVED BEFORE USE.THE AND CLAUSES SHOULD BE USED CONDITIONALLY. FIRST QUERY SHOWS ALL TRANSACTIONS, SECOND SHOWS ALL PRODUCTS FOR A GIVEN TRANSACTION
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street
+FROM product_transaction t, customer c, store s
+WHERE c.card_number = t.card_number AND s.storeID = t.storeID {AND t.storeID = (SELECT storeID FROM store WHERE city = 'Athens' AND address = 'Griva')}{AND t.date_time BETWEEN '2020-4-7' AND '2020-12-31'} {AND t.total_pieces BETWEEN 5 AND 10} {AND t.total_amount BETWEEN 5.0 AND 10.} {AND t.payment_method = 'cash'};
+
+SELECT p.product_name, c.pieces, c.price_bought AS price
+FROM product_contains c, product p
+WHERE c.card_number = (SELECT card_number FROM customer WHERE first_name = 'Emily' AND last_name = 'Ratajkowski') AND c.date_time = '2020-4-9 12:46:19' AND p.barcode = c.barcode;
+_________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+THIS QUERY IF A CERTAIN CATEGORY IS GIVEN AS A FILTER. THE FILTERS ARE CONTAINED IN {}, WHICH SHOULD BE REMOVED BEFORE USE.THE AND CLAUSES SHOULD BE USED CONDITIONALLY. FIRST QUERY SHOWS ALL TRANSACTIONS, BUT ALL AMOUNTS AND ITEMS CONCERN THE CERTAIN CATEGORY, SECOND SHOWS ALL PRODUCTS FOR A GIVEN TRANSACTION THAT FALL INTO THE CERTAIN CATEGORY
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+SELECT *
+FROM(
+SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought)  AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos
+FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s
+WHERE t.date_time = c.date_time #connecting transaction with contains
+AND t.card_number = c.card_number #connecting transaction with contains
+AND p.barcode = c.barcode #connecting products contained to actual products
+AND cat.categoryID = p.categoryID #finding category of each product
+AND cu.card_number = t.card_number #finding customer names
+AND s.storeID = t.storeID #finding stores
+AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = 'fresh products') #filtering for a certain category
+{AND t.storeID = (SELECT storeID FROM store WHERE city = 'Athens' AND street = 'Griva')} #filtering for a certain store
+{AND t.date_time BETWEEN '2020-1-1' AND '2020-12-31' }#filtering for a range of dates
+{AND t.payment_method = 'cash'} #filtering for paymentm method
+GROUP BY t.date_time, t.card_number) AS KOLLAEI
+WHERE 1=1 {AND total_items BETWEEN 0 AND 100} {AND total_price BETWEEN 20.0 AND 25.0};
+
+SELECT p.product_name, c.pieces, c.price_bought AS price, cat.category_name
+FROM product_contains c, product p, category cat
+WHERE cat.categoryID = (SELECT categoryID FROM category WHERE category_name = 'fresh products') AND c.card_number = (SELECT card_number FROM customer WHERE first_name = 'Emily' AND last_name = 'Ratajkowski') AND c.date_time = '2020-4-9 12:46:19' AND p.barcode = c.barcode AND p.categoryID = cat.categoryID;
