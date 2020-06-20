@@ -53,7 +53,9 @@ else{
     <td><%=age%></td>
 </tr>
 </table>
-<button type="button" onclick="check_customer(<%=counter%>)">Check Customer</button>	
+<button type="button" onclick="check_customer(<%=counter%>)">Check Customer</button>
+<button type="button" onclick="check_customer(<%=counter%>)">Delete Customer</button>
+<button type="button" onclick="check_customer(<%=counter%>)">Update Profile Info</button>
 <br>
 <br>
 <br>
