@@ -41,3 +41,10 @@ RIGHT JOIN (SELECT count(*) as r2, cat2
     GROUP BY o.cat2) AS leipeis
 ON mou.cat1 = leipeis.cat2
 GROUP BY cat2;
+___________________________________________________________________________________________________________________________________________________________
+THE FOLLOWING QUERY RETURNS HOURS OF THE DAY IN WHICH CUSTOMERS SPEND THE MOST MONEY, IN DESCENDING ORDER OF TOTAL AMOUNT OF MONEY SPENT
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+SELECT HOUR(date_time) hour_of_transaction, CAST(SUM(total_amount) AS DECIMAL(10,2)) AS total_money_spent_in_this_hour
+FROM product_transaction
+GROUP BY HOUR(date_time)
+ORDER BY SUM(total_amount) DESC;
