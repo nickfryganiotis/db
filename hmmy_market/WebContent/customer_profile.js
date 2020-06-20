@@ -11,8 +11,6 @@ function check_customer(counter){
 	}
 	var customer_name=text.split(" ");
 	customer_name[2] = customer_name[2].replace(/(\r\n|\n|\r)/gm, "");
-	document.cookie = "customer_fname="+customer_name[1];
-	document.cookie = "customer_lname="+customer_name[2];
-	window.location = "user.jsp";
+	window.location.replace("user.jsp?name="+customer_name[1]+" "+customer_name[2]);
 }
 

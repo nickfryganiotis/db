@@ -5,10 +5,8 @@
 <%@ page session="false" %>
 <%@page import="java.util.* "%>
 
-<% Cookie cookie = null;
-Cookie[] cookies = null; 
-request.getSession(false);
-cookies = request.getCookies();
+<% 
+String customer_name=request.getParameter("name");
 %>
 <%
 	String connectionURL = "jdbc:mysql://localhost:3306/market";
@@ -33,13 +31,14 @@ cookies = request.getCookies();
 <script src = user.js></script>
 </head>
 <body>
-<%if(cookies == null) {%>
+<%if(customer_name == null) {%>
 <h1>Oops something went wrong</h1>
 <p1>Choose a customer's profile</p1>
 <%}else{ 
-         String customer_fname = cookies[0].getValue();
-         String customer_lname = cookies[1].getValue();
-         String username = "root";
+	     String[] customer_nameArr = customer_name.split(" ", 2);
+	     String customer_lname = customer_nameArr[1];
+	     String customer_fname = customer_nameArr[0];
+	     String username = "root";
          String password = "";
          Class.forName("com.mysql.jdbc.Driver").newInstance();
          connection = DriverManager.getConnection(connectionURL, username,password);

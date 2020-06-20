@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <%@ page import="java.sql.*"%>
 <%@ page import="java.util.*"%> 
+<%@ page session="false" %>
 <%@ page import="hmmy_market.sorting"%>
 <%
 	String connectionURL = "jdbc:mysql://localhost:3306/market";
@@ -26,7 +27,6 @@ while(rs_1.next()){
 }
 for(int t=0; t<cities.size(); t++){
 	if(cities.get(t).equals("Thessloniki")){
-		System.out.println(t);
 		cities.set(t,"Thessaloniki");
 	}
 }
