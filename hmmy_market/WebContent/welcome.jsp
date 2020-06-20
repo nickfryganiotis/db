@@ -40,36 +40,40 @@ addresses = s.getAddresses();
 <head>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href='images/logo.png'>
     <link rel="stylesheet" href="welcome.css">
-<title>Welcome_page</title>
+    <script src = "welcome.js"></script>
+<title>Hmmy Market Eshop</title>
 
 </head>
 <body>
 <nav>
     <ul class="mainMenu">
+       
         <li><a href="#">Transactions</a>
          <ul class="subMenu">
          <%int t=0;
+         int cit=0;
          while(t<cities.size()){ %>
-             <li><a href="#"><%=cities.get(t) %></a>    
+             <li><a id="<%="city"+String.valueOf(cit)%>" =href="#"><%=cities.get(t) %></a>    
                  <ul class="SuperSubMenu">
                  <% while(t<(cities.size())){
                 	   if(t==(cities.size()-1)){%>
-                		   <li><a href="#"><%=addresses.get(t) %></a></li>
+                		   <li><a id= "<%="store"+String.valueOf(t)%>" onclick ="check_store(<%=t%>,<%=cit %>)" href="#"><%=addresses.get(t) %></a></li>
                 		   <% 
                 		   
                 		   t++;
                 		   
                 		   }
                 	   else if(!(cities.get(t).equals(cities.get(t+1)))){%>
-                		   <li><a href="#"><%=addresses.get(t) %></a></li>
+                		   <li><a id= "<%="store"+String.valueOf(t)%>" onclick ="check_store(<%=t%>,<%=cit %>)" href="#"><%=addresses.get(t) %></a></li>
                 		   <%   
                 		   
                 		   t++;
                 		   break;
                 	   }
                 		 else{%>
-                			 <li><a href="#"><%=addresses.get(t) %></a></li>
+                			<li><a id= "<%="store"+String.valueOf(t)%>" onclick ="check_store(<%=t%>,<%=cit %>)" href="#"> <%=addresses.get(t) %></a></li>
                   		   <%
                   		 
                   		   t++; 
@@ -77,8 +81,8 @@ addresses = s.getAddresses();
                 	}%>                     
                 </ul>
                 </li>
-        <% }%>
-        
+        <% cit++;}%>
+         <li><a id= "<%="store"+String.valueOf(t)%>" onclick ="check_store(<%=t %>)" href="#"> Choose all Cities</a></li>
     </ul>
     </li>
         <li><a href="customer_profile.jsp">Customers' Profile</a></li>

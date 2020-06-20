@@ -2,6 +2,7 @@ html,body{
  padding: 0;
  margin: 0;
  font-family: 'Open Sans', sans-serif;
+ background:CadetBlue
 }
 ul{
     margin: 0;
@@ -11,7 +12,7 @@ ul{
 a{
     margin: 0;
     text-align: center;
-    padding: 12px 15px 12px 15px;
+    padding: 20px 50px 20px 50px;
     background: #5F6975;
     color: white;
     display: block;
@@ -48,4 +49,10 @@ li:hover>a{
 }
 .subMenu li:hover>.SuperSubMenu{
     display: block;
+}
+.logo{
+  display: block;
+  margin-left: auto;
+  width: 50%;
+  height: 50px;
 }
