@@ -22,3 +22,22 @@ SELECT alley_number, shelf_number, count(*) AS times_together
 FROM offers
 GROUP BY alley_number, shelf_number
 ORDER BY times_together DESC;
+_______________________________________________________________________________________________________________________________________________________
+THE FOLLOWING QUERY RETURNS THE PERCENTAGES OF BRAND NAME HMMYMARKET PRODUCTS BOUGHT OVER THE TOTAL NUMBER OF PRODUCTS BOUGHT FOR EACH CATEGORY
+------------------------------------------------------------------------------------------------------------------------------------------------------
+SELECT CAST((IFNULL(r1,0)/r2)*100 AS DECIMAL(4,2)) AS brand_name_percentage, cat2 AS category_name
+FROM
+	(SELECT count(*) AS r1, cat1
+	FROM(
+		SELECT card_number as c1, date_time as d1, category_name as cat1
+		FROM product_contains c, product p, category cat
+		WHERE c.barcode = p.barcode AND p.brand_name = 'HMMYmarket' AND cat.categoryID = p.categoryID) AS b
+	GROUP BY b.cat1) AS mou
+RIGHT JOIN (SELECT count(*) as r2, cat2
+	FROM(
+		SELECT card_number as c2, date_time as d2, category_name AS cat2
+		FROM product_contains c, category cat, product p
+		WHERE c.barcode = p.barcode AND p.categoryID = cat.categoryID) AS o
+    GROUP BY o.cat2) AS leipeis
+ON mou.cat1 = leipeis.cat2
+GROUP BY cat2;
