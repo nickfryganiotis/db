@@ -86,6 +86,7 @@ addresses = s.getAddresses();
     </ul>
     </li>
         <li><a href="customer_profile.jsp">Customers' Profile</a></li>
+        <li><a href = "stores_info.jsp">General Stores Info</a></li>
     </ul>    
 </nav>
 </body>
