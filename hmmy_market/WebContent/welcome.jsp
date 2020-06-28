@@ -55,7 +55,7 @@ addresses = s.getAddresses();
          <%int t=0;
          int cit=0;
          while(t<cities.size()){ %>
-             <li><a id="<%="city"+String.valueOf(cit)%>" =href="#"><%=cities.get(t) %></a>    
+             <li><a id="<%="city"+String.valueOf(cit)%>" href="#"><%=cities.get(t) %></a>    
                  <ul class="SuperSubMenu">
                  <% while(t<(cities.size())){
                 	   if(t==(cities.size()-1)){%>
@@ -86,7 +86,14 @@ addresses = s.getAddresses();
     </ul>
     </li>
         <li><a href="customer_profile.jsp">Customers' Profile</a></li>
-        <li><a href = "stores_info.jsp">General Stores Info</a></li>
+        <li><a href = "#">General Stores Info</a>
+        <ul class="subMenu">
+        <li><a href ="pair_products.jsp">Favourite pair products </a></li>
+        <li><a href = "position_products.jsp">Most popular positions <br>
+         of products</a></li>
+         <li><a href = "brandName_products.jsp">The likelihoud of<br> our brand name products</a></li>
+        </ul>
+        </li>
     </ul>    
 </nav>
 </body>
