@@ -109,3 +109,11 @@ GROUP BY wra4) AS wtvr4
 ON wra = wra4)
 GROUP BY wra) AS nammos4
 ON nammos.wra = nammos4.wra
+
+___________________________________________________________________________________________________________________________________________________________
+THE FOLLOWING QUERY RETURNS HOURS OF THE DAY IN WHICH CUSTOMERS SPEND THE MOST MONEY, IN DESCENDING ORDER OF TOTAL AMOUNT OF MONEY SPENT
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+SELECT HOUR(date_time) hour_of_transaction, ROUND(SUM(total_amount), 2) AS total_money_spent_in_this_hour
+FROM product_transaction
+GROUP BY HOUR(date_time)
+ORDER BY SUM(total_amount) DESC;
