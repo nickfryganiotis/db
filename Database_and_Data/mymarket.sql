@@ -150,3 +150,20 @@ LOAD DATA INFILE 'C:/Users/user/Desktop/Price_history2.txt' INTO TABLE price_his
 LOAD DATA INFILE 'C:/Users/user/Desktop/Product_transaction.txt' INTO TABLE product_transaction FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (card_number, storeID, payment_method, date_time);
 LOAD DATA INFILE 'C:/Users/user/Desktop/Product_contains.txt' INTO TABLE product_contains FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (card_number,date_time, barcode, pieces);
 
+CREATE OR REPLACE VIEW customer_info AS
+SELECT first_name, last_name, points, street, address_number, postal_code, city, family_members, pet, age, phone_number
+FROM customer;
+
+CREATE OR REPLACE VIEW transaction_category_store AS
+SELECT c.date_time AS imerominia , cu.first_name AS mikro, cu.last_name AS eponumo, COUNT(c.pieces) AS total_items, ROUND(SUM(c.pieces*c.price_bought),2)  AS total_price, cat.category_name AS katigoria , t.payment_method AS lefta, s.city AS poli, s.street AS dromos, s.address_number AS arithmos
+FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s
+WHERE t.date_time = c.date_time 
+AND t.card_number = c.card_number 
+AND p.barcode = c.barcode 
+AND cat.categoryID = p.categoryID 
+AND cu.card_number = t.card_number 
+AND s.storeID = t.storeID 
+GROUP BY t.date_time, t.card_number;
+
+
+
