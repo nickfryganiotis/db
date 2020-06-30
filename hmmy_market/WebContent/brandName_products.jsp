@@ -38,7 +38,6 @@ while(rs_1.next()){
 	brand_name_percentage.add(rs_1.getInt("brand_name_percentage"));
 	category_name.add(rs_1.getString("category_name"));
 }
-
 %>
 <html>
 <head>
@@ -51,17 +50,15 @@ while(rs_1.next()){
 <title>Hmmymarket brand name products</title>
 </head>
 <body>
-<h1>The percentages of brand name Hmmymarket products bought over the total number 
-<br> of products bought for each category</h1>
- <div class="container">
-               <canvas id="myChart"></canvas>
-               <script type="text/javascript">
-               var category_name = <%="'"+category_name+"'"%>;
-               category_name = category_name.replace(/(\[|\])/gm, "");
-               category_name = category_name.split(",");
-               var brand_name_percentage = <%=brand_name_percentage%>;
-               diagrams(brand_name_percentage,category_name);
-               </script>
- </div>
+ <div id="chartContainer">
+<script type="text/javascript">
+var category_name = <%="'"+category_name+"'"%>;
+category_name = category_name.replace(/(\[|\])/gm, "");
+category_name = category_name.split(",");
+var brand_name_percentage = <%=brand_name_percentage%>;
+var title = "The percentages of brand name Hmmymarket products bought over the total number of products bought for each category";
+pie_charts(brand_name_percentage,category_name,title);
+</script>
+</div>               
 </body>
 </html>

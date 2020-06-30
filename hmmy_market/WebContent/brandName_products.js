@@ -1,26 +1,21 @@
-function diagrams(brand_name_percentage,category_name){
-	var lcolour=[];
-    var ldata=[];
-    var lprod = [];
-    for(var i=0; i<brand_name_percentage.length; i++){
-        lcolour.push('rgba(255, 99, 132, 0.6)') ;
-        ldata.push(brand_name_percentage[i]);
-        lprod.push(category_name[i]);
-    }
-    let myChart=document.getElementById('myChart').getContext('2d');
-    let massPopChart = new Chart(myChart, {
-        type:'bar',
-        data:{
-            labels:lprod,
-        datasets:[
-            {
-                label: "Percentages %",
-                data:ldata,
-                backgroundColor:lcolour
-            }
- 
-          ],
-            
-    }
-    })
-}
+function pie_charts(brand_name_percentage,category_name,title){
+	var aux = [];
+	for(i=0; i<brand_name_percentage.length; i++){ 
+		aux.push({y: brand_name_percentage[i], label: category_name[i]});
+	}
+	var chart = new CanvasJS.Chart("chartContainer", {
+		animationEnabled: true,
+		title: {
+			text: title
+		},
+		data: [{
+			type: "pie",
+			startAngle: 240,
+			yValueFormatString: "##0.00\"%\"",
+			indexLabel: "{label} {y}",
+			dataPoints: aux
+		}]
+	});
+	chart.render();
+
+	}

@@ -92,6 +92,8 @@ addresses = s.getAddresses();
         <li><a href = "position_products.jsp">Most popular positions <br>
          of products</a></li>
          <li><a href = "brandName_products.jsp">The likelihoud of<br> our brand name products</a></li>
+         <li><a href = "moneyEq_time.jsp">The  most profitable hours</a></li>
+         <l1><a href="grannies_first.jsp">Visits by age groups</a></l1>
         </ul>
         </li>
     </ul>    

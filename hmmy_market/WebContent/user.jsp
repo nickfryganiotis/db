@@ -164,11 +164,13 @@ String customer_name=request.getParameter("name");
                <script type="text/javascript"> 
                var hours=<%=hours%>;
                var total_transactions= <%=total_transactions %>;
-               var keys=Array.from(Array(12), (_, i) => i + 1);
+               var keys=Array.from(Array(24), (_, i) => i );
                keys.map(String);
-               var values = new Array(12).fill(0);
+               var aux = new Array(24).fill(":00");
+               keys =keys.map((a,i)=>a+aux[i]);
+               var values = new Array(24).fill(0);
                for(j=0; j<total_transactions.length; j++){
-            		values[hours[j]-1] = total_transactions[j];            	   
+            		values[hours[j]] = total_transactions[j];
                } 
                var label = "Total Transaction";
                var iter = "2";
