@@ -96,6 +96,12 @@ addresses = s.getAddresses();
          <l1><a href="grannies_first.jsp">Visits by age groups</a></l1>
         </ul>
         </li>
+        <li><a href="#">Views</a>
+        <ul class="subMenu">
+        <li><a href ="view_customer.jsp">Customer info</a></li>
+        <li><a href ="view_transaction.jsp">Transactions by store <br>and category </a></li>
+        </ul>
+        </li>
     </ul>    
 </nav>
 </body>

@@ -70,11 +70,20 @@ while(rs_1.next()){
 <%} %>
 <form method="get" action=<%="transactions.jsp?store="+store%>>
 		<table>
-			<tr>
-				<td>Date:</td>
-				<td><input type="text" name="date" size=50 /></td>
-			</tr>
-		</table>
+		<tr>
+		<td>Beginning date:</td>
+		<td><input type="date" id="start" name="date_start"
+		min="2020-05-29" max="2020-07-05"></td>
+       </tr>
+       </table>
+       <br>
+       <table>
+       <tr>
+       <td>Ending date:</td>
+		<td><input type="date" id="end" name="date_end"
+		min="2020-05-29" max="2020-07-05"></td>
+       </tr>
+       </table>
 		<br>
 		<table>
 			<tr>
@@ -106,6 +115,7 @@ while(rs_1.next()){
 		<br>
 		<label for="categories">Choose a category:</label>
 		<select id="categories" name="Categories">
+		<option value="all categories">all categories</option>
 		<%for(int i=0; i<category.size(); i++){
 			%>
 		<option value="<%=category.get(i)%>"><%=category.get(i) %></option>
@@ -117,15 +127,24 @@ while(rs_1.next()){
 			</tr>
 		</table>
 	</form>
-	<%String date = request.getParameter("date");
-	String cat = request.getParameter("Categories");
-	//System.out.println(cat);
-	if(date!=null&date!=""){%><ul><li><%=date %></li>
-	<%if(cat!=null){%>
-	<li><%=cat %></li>
-	<%} %>
-	</ul>
-	<%} %>
+	<%String cat = request.getParameter("Categories");
+	
+	if(cat != null){
+		if(cat.equals("all categories")){
+			String beginning_date = request.getParameter("date_start");
+			String ending_date = request.getParameter("date_end");
+			if(beginning_date!=""){
+				if(ending_date==""){
+					ending_date=beginning_date;
+				}
+				String quantity = request.getParameter("quantity");
+				if(quantity!=""){
+					String total_cost = request.getParameter("quantity");
+				}
+			}
+	   }
+	}
+	 %>
 	
 </body>
 </html>
