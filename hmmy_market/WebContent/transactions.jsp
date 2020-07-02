@@ -404,9 +404,549 @@ while(rs_1.next()){
 					}
 					
 					}
+					else{
+						if(max_total_cost!=""){%>
+							<script>alert("Please fill out first the box 'From:' of Total Cost");
+							</script>
+						<% 	
+						}
+						else{
+							if(Payment_method_1==null &Payment_method_2==null){
+								%>
+								<script type="text/javascript">
+								alert("Please select at least one payment method");
+								</script>
+								<%
+							}
+							else{
+								 
+							    if(Payment_method_2==null){
+								  sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
+							      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
+							      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
+							      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
+							      " AND t.payment_method = 'card';";
+							      rs_1 = statement.executeQuery(sqlSelect);
+							      ArrayList<String> fname=new ArrayList<String>();
+							      ArrayList<String> lname=new ArrayList<String>();
+							      ArrayList<String> date_time = new ArrayList<String>();
+							      ArrayList<Double> total_amount = new ArrayList<Double>();
+							      ArrayList<Integer> total_pieces = new ArrayList<>();
+							      ArrayList<String> payment_method = new ArrayList<String>();
+							      ArrayList<String> city = new ArrayList<String>();
+							      ArrayList<String> street = new ArrayList<String>();
+							      while(rs_1.next()){
+							    	  fname.add(rs_1.getString("first_name"));
+							    	  lname.add(rs_1.getString("last_name"));
+							    	  date_time.add(rs_1.getString("date_time"));
+							    	  total_amount.add(rs_1.getDouble("total_amount"));
+							    	  total_pieces.add(rs_1.getInt("total_pieces"));
+							    	  payment_method.add(rs_1.getString("payment_method"));
+							    	  city.add(rs_1.getString("city"));
+							    	  street.add(rs_1.getString("city"));
+							      }
+							      %>
+							      <div class=arr>
+							      <table>
+							      <tr>
+							      <td>Name</td>
+							      <td>Date and Time</td>
+							      <td>Total Pieces</td>
+							      <td>Total Cost</td>
+							      <td>Payment Method</td>
+							      <td>City</td>
+							      <td>Street</td>
+							      </tr>
+							      <%for(int k=0; k<fname.size(); k++){
+							    	  %>
+							    	  <tr>
+							    	  <td><%=fname.get(k)+" "+lname.get(k) %></td>
+							    	  <td><%=date_time.get(k) %></td>
+							    	  <td><%=total_pieces.get(k) %></td>
+							    	  <td><%=total_amount.get(k) %></td>
+							    	  <td><%=payment_method.get(k) %></td>
+							    	  <td><%=city.get(k) %></td>
+							    	  <td><%=street.get(k) %></td>
+							    	  </tr>					    	  						    	  
+							      <% }%>
+							      </table>
+							      </div>
+							      <%
+							    }
+							    else if(Payment_method_1==null){
+							    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
+										      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
+										      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
+										      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
+										      " AND t.payment_method = 'cash';";
+										      rs_1 = statement.executeQuery(sqlSelect);
+										      ArrayList<String> fname=new ArrayList<String>();
+										      ArrayList<String> lname=new ArrayList<String>();
+										      ArrayList<String> date_time = new ArrayList<String>();
+										      ArrayList<Double> total_amount = new ArrayList<Double>();
+										      ArrayList<Integer> total_pieces = new ArrayList<>();
+										      ArrayList<String> payment_method = new ArrayList<String>();
+										      ArrayList<String> city = new ArrayList<String>();
+										      ArrayList<String> street = new ArrayList<String>();
+										      while(rs_1.next()){
+										    	  fname.add(rs_1.getString("first_name"));
+										    	  lname.add(rs_1.getString("last_name"));
+										    	  date_time.add(rs_1.getString("date_time"));
+										    	  total_amount.add(rs_1.getDouble("total_amount"));
+										    	  total_pieces.add(rs_1.getInt("total_pieces"));
+										    	  payment_method.add(rs_1.getString("payment_method"));
+										    	  city.add(rs_1.getString("city"));
+										    	  street.add(rs_1.getString("city"));
+										      }
+										      
+										      %>
+										      <div class=arr>
+										      <table>
+										      <tr>
+										      <td>Name</td>
+										      <td>Date and Time</td>
+										      <td>Total Pieces</td>
+										      <td>Total Cost</td>
+										      <td>Payment Method</td>
+										      <td>City</td>
+										      <td>Street</td>
+										      </tr>
+										      <%for(int k=0; k<fname.size(); k++){
+										    	  %>
+										    	  <tr>
+										    	  <td><%=fname.get(k)+" "+lname.get(k) %></td>
+										    	  <td><%=date_time.get(k) %></td>
+										    	  <td><%=total_pieces.get(k) %></td>
+										    	  <td><%=total_amount.get(k) %></td>
+										    	  <td><%=payment_method.get(k) %></td>
+										    	  <td><%=city.get(k) %></td>
+										    	  <td><%=street.get(k) %></td>
+										    	  </tr>					    	  						    	  
+										      <% }%>
+										      </table>
+										      </div>
+										      <%
+							    }
+							    else{
+							    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
+										      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
+										      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
+										      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
+										      " AND t.total_amount BETWEEN "+";";
+										      rs_1 = statement.executeQuery(sqlSelect);
+										      rs_1 = statement.executeQuery(sqlSelect);
+										      ArrayList<String> fname=new ArrayList<String>();
+										      ArrayList<String> lname=new ArrayList<String>();
+										      ArrayList<String> date_time = new ArrayList<String>();
+										      ArrayList<Double> total_amount = new ArrayList<Double>();
+										      ArrayList<Integer> total_pieces = new ArrayList<>();
+										      ArrayList<String> payment_method = new ArrayList<String>();
+										      ArrayList<String> city = new ArrayList<String>();
+										      ArrayList<String> street = new ArrayList<String>();
+										      while(rs_1.next()){
+										    	  fname.add(rs_1.getString("first_name"));
+										    	  lname.add(rs_1.getString("last_name"));
+										    	  date_time.add(rs_1.getString("date_time"));
+										    	  total_amount.add(rs_1.getDouble("total_amount"));
+										    	  total_pieces.add(rs_1.getInt("total_pieces"));
+										    	  payment_method.add(rs_1.getString("payment_method"));
+										    	  city.add(rs_1.getString("city"));
+										    	  street.add(rs_1.getString("city"));
+										      }
+										      %>
+										      <div class=arr>
+										      <table>
+										      <tr>
+										      <td>Name</td>
+										      <td>Date and Time</td>
+										      <td>Total Pieces</td>
+										      <td>Total Cost</td>
+										      <td>Payment Method</td>
+										      <td>City</td>
+										      <td>Street</td>
+										      </tr>
+										      <%for(int k=0; k<fname.size(); k++){
+										    	  %>
+										    	  <tr>
+										    	  <td><%=fname.get(k)+" "+lname.get(k) %></td>
+										    	  <td><%=date_time.get(k) %></td>
+										    	  <td><%=total_pieces.get(k) %></td>
+										    	  <td><%=total_amount.get(k) %></td>
+										    	  <td><%=payment_method.get(k) %></td>
+										    	  <td><%=city.get(k) %></td>
+										    	  <td><%=street.get(k) %></td>
+										    	  </tr>					    	  						    	  
+										      <% }%>
+										      </table>
+										      </div>
+									      <%
+							 }
+							
+							    
+					}
 				}
 			}
 	   }
+				else{
+					if(max_quantity==""||max_quantity.compareTo(min_quantity)<0){
+						max_quantity=min_quantity;
+					}
+					
+					if(min_total_cost!=""){
+						if(max_total_cost == ""||max_total_cost.compareTo(min_total_cost)<0){
+							max_total_cost = min_total_cost;
+						}						
+						if(Payment_method_1==null &Payment_method_2==null){
+							%>
+							<script type="text/javascript">
+							alert("Please select at least one payment method");
+							</script>
+							<%
+						}
+						else{
+							 
+						    if(Payment_method_2==null){
+							  sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
+						      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
+						      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
+						      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
+						      " AND t.total_amount BETWEEN "+min_total_cost+ " AND "+max_total_cost +" AND t.payment_method = 'card';";
+						      rs_1 = statement.executeQuery(sqlSelect);
+						      ArrayList<String> fname=new ArrayList<String>();
+						      ArrayList<String> lname=new ArrayList<String>();
+						      ArrayList<String> date_time = new ArrayList<String>();
+						      ArrayList<Double> total_amount = new ArrayList<Double>();
+						      ArrayList<Integer> total_pieces = new ArrayList<>();
+						      ArrayList<String> payment_method = new ArrayList<String>();
+						      ArrayList<String> city = new ArrayList<String>();
+						      ArrayList<String> street = new ArrayList<String>();
+						      while(rs_1.next()){
+						    	  fname.add(rs_1.getString("first_name"));
+						    	  lname.add(rs_1.getString("last_name"));
+						    	  date_time.add(rs_1.getString("date_time"));
+						    	  total_amount.add(rs_1.getDouble("total_amount"));
+						    	  total_pieces.add(rs_1.getInt("total_pieces"));
+						    	  payment_method.add(rs_1.getString("payment_method"));
+						    	  city.add(rs_1.getString("city"));
+						    	  street.add(rs_1.getString("city"));
+						      }
+						      %>
+						      <div class=arr>
+						      <table>
+						      <tr>
+						      <td>Name</td>
+						      <td>Date and Time</td>
+						      <td>Total Pieces</td>
+						      <td>Total Cost</td>
+						      <td>Payment Method</td>
+						      <td>City</td>
+						      <td>Street</td>
+						      </tr>
+						      <%for(int k=0; k<fname.size(); k++){
+						    	  %>
+						    	  <tr>
+						    	  <td><%=fname.get(k)+" "+lname.get(k) %></td>
+						    	  <td><%=date_time.get(k) %></td>
+						    	  <td><%=total_pieces.get(k) %></td>
+						    	  <td><%=total_amount.get(k) %></td>
+						    	  <td><%=payment_method.get(k) %></td>
+						    	  <td><%=city.get(k) %></td>
+						    	  <td><%=street.get(k) %></td>
+						    	  </tr>					    	  						    	  
+						      <% }%>
+						      </table>
+						      </div>
+						      <%
+						    }
+						    else if(Payment_method_1==null){
+						    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
+									      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
+									      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
+									      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
+									      " AND t.total_amount BETWEEN "+min_total_cost+ " AND "+max_total_cost +" AND t.payment_method = 'cash';";
+									      rs_1 = statement.executeQuery(sqlSelect);
+									      ArrayList<String> fname=new ArrayList<String>();
+									      ArrayList<String> lname=new ArrayList<String>();
+									      ArrayList<String> date_time = new ArrayList<String>();
+									      ArrayList<Double> total_amount = new ArrayList<Double>();
+									      ArrayList<Integer> total_pieces = new ArrayList<>();
+									      ArrayList<String> payment_method = new ArrayList<String>();
+									      ArrayList<String> city = new ArrayList<String>();
+									      ArrayList<String> street = new ArrayList<String>();
+									      while(rs_1.next()){
+									    	  fname.add(rs_1.getString("first_name"));
+									    	  lname.add(rs_1.getString("last_name"));
+									    	  date_time.add(rs_1.getString("date_time"));
+									    	  total_amount.add(rs_1.getDouble("total_amount"));
+									    	  total_pieces.add(rs_1.getInt("total_pieces"));
+									    	  payment_method.add(rs_1.getString("payment_method"));
+									    	  city.add(rs_1.getString("city"));
+									    	  street.add(rs_1.getString("city"));
+									      }
+									      
+									      %>
+									      <div class=arr>
+									      <table>
+									      <tr>
+									      <td>Name</td>
+									      <td>Date and Time</td>
+									      <td>Total Pieces</td>
+									      <td>Total Cost</td>
+									      <td>Payment Method</td>
+									      <td>City</td>
+									      <td>Street</td>
+									      </tr>
+									      <%for(int k=0; k<fname.size(); k++){
+									    	  %>
+									    	  <tr>
+									    	  <td><%=fname.get(k)+" "+lname.get(k) %></td>
+									    	  <td><%=date_time.get(k) %></td>
+									    	  <td><%=total_pieces.get(k) %></td>
+									    	  <td><%=total_amount.get(k) %></td>
+									    	  <td><%=payment_method.get(k) %></td>
+									    	  <td><%=city.get(k) %></td>
+									    	  <td><%=street.get(k) %></td>
+									    	  </tr>					    	  						    	  
+									      <% }%>
+									      </table>
+									      </div>
+									      <%
+						    }
+						    else{
+						    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
+									      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
+									      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
+									      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
+									      " AND t.total_amount BETWEEN "+min_total_cost+ " AND "+max_total_cost +";";
+									      rs_1 = statement.executeQuery(sqlSelect);
+									      rs_1 = statement.executeQuery(sqlSelect);
+									      ArrayList<String> fname=new ArrayList<String>();
+									      ArrayList<String> lname=new ArrayList<String>();
+									      ArrayList<String> date_time = new ArrayList<String>();
+									      ArrayList<Double> total_amount = new ArrayList<Double>();
+									      ArrayList<Integer> total_pieces = new ArrayList<>();
+									      ArrayList<String> payment_method = new ArrayList<String>();
+									      ArrayList<String> city = new ArrayList<String>();
+									      ArrayList<String> street = new ArrayList<String>();
+									      while(rs_1.next()){
+									    	  fname.add(rs_1.getString("first_name"));
+									    	  lname.add(rs_1.getString("last_name"));
+									    	  date_time.add(rs_1.getString("date_time"));
+									    	  total_amount.add(rs_1.getDouble("total_amount"));
+									    	  total_pieces.add(rs_1.getInt("total_pieces"));
+									    	  payment_method.add(rs_1.getString("payment_method"));
+									    	  city.add(rs_1.getString("city"));
+									    	  street.add(rs_1.getString("city"));
+									      }
+									      %>
+									      <div class=arr>
+									      <table>
+									      <tr>
+									      <td>Name</td>
+									      <td>Date and Time</td>
+									      <td>Total Pieces</td>
+									      <td>Total Cost</td>
+									      <td>Payment Method</td>
+									      <td>City</td>
+									      <td>Street</td>
+									      </tr>
+									      <%for(int k=0; k<fname.size(); k++){
+									    	  %>
+									    	  <tr>
+									    	  <td><%=fname.get(k)+" "+lname.get(k) %></td>
+									    	  <td><%=date_time.get(k) %></td>
+									    	  <td><%=total_pieces.get(k) %></td>
+									    	  <td><%=total_amount.get(k) %></td>
+									    	  <td><%=payment_method.get(k) %></td>
+									    	  <td><%=city.get(k) %></td>
+									    	  <td><%=street.get(k) %></td>
+									    	  </tr>					    	  						    	  
+									      <% }%>
+									      </table>
+									      </div>
+									      <%
+						    }
+					}
+					
+					}
+					else{
+						if(max_total_cost!=""){%>
+							<script>alert("Please fill out first the box 'From:' of Total Cost");
+							</script>
+						<% 	
+						}
+						else{
+							if(Payment_method_1==null &Payment_method_2==null){
+								%>
+								<script type="text/javascript">
+								alert("Please select at least one payment method");
+								</script>
+								<%
+							}
+							else{
+								 
+							    if(Payment_method_2==null){
+								  sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
+							      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
+							      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
+							      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
+							      " AND t.payment_method = 'card';";
+							      rs_1 = statement.executeQuery(sqlSelect);
+							      ArrayList<String> fname=new ArrayList<String>();
+							      ArrayList<String> lname=new ArrayList<String>();
+							      ArrayList<String> date_time = new ArrayList<String>();
+							      ArrayList<Double> total_amount = new ArrayList<Double>();
+							      ArrayList<Integer> total_pieces = new ArrayList<>();
+							      ArrayList<String> payment_method = new ArrayList<String>();
+							      ArrayList<String> city = new ArrayList<String>();
+							      ArrayList<String> street = new ArrayList<String>();
+							      while(rs_1.next()){
+							    	  fname.add(rs_1.getString("first_name"));
+							    	  lname.add(rs_1.getString("last_name"));
+							    	  date_time.add(rs_1.getString("date_time"));
+							    	  total_amount.add(rs_1.getDouble("total_amount"));
+							    	  total_pieces.add(rs_1.getInt("total_pieces"));
+							    	  payment_method.add(rs_1.getString("payment_method"));
+							    	  city.add(rs_1.getString("city"));
+							    	  street.add(rs_1.getString("city"));
+							      }
+							      %>
+							      <div class=arr>
+							      <table>
+							      <tr>
+							      <td>Name</td>
+							      <td>Date and Time</td>
+							      <td>Total Pieces</td>
+							      <td>Total Cost</td>
+							      <td>Payment Method</td>
+							      <td>City</td>
+							      <td>Street</td>
+							      </tr>
+							      <%for(int k=0; k<fname.size(); k++){
+							    	  %>
+							    	  <tr>
+							    	  <td><%=fname.get(k)+" "+lname.get(k) %></td>
+							    	  <td><%=date_time.get(k) %></td>
+							    	  <td><%=total_pieces.get(k) %></td>
+							    	  <td><%=total_amount.get(k) %></td>
+							    	  <td><%=payment_method.get(k) %></td>
+							    	  <td><%=city.get(k) %></td>
+							    	  <td><%=street.get(k) %></td>
+							    	  </tr>					    	  						    	  
+							      <% }%>
+							      </table>
+							      </div>
+							      <%
+							    }
+							    else if(Payment_method_1==null){
+							    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
+										      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
+										      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
+										      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
+										      " AND t.payment_method = 'cash';";
+										      rs_1 = statement.executeQuery(sqlSelect);
+										      ArrayList<String> fname=new ArrayList<String>();
+										      ArrayList<String> lname=new ArrayList<String>();
+										      ArrayList<String> date_time = new ArrayList<String>();
+										      ArrayList<Double> total_amount = new ArrayList<Double>();
+										      ArrayList<Integer> total_pieces = new ArrayList<>();
+										      ArrayList<String> payment_method = new ArrayList<String>();
+										      ArrayList<String> city = new ArrayList<String>();
+										      ArrayList<String> street = new ArrayList<String>();
+										      while(rs_1.next()){
+										    	  fname.add(rs_1.getString("first_name"));
+										    	  lname.add(rs_1.getString("last_name"));
+										    	  date_time.add(rs_1.getString("date_time"));
+										    	  total_amount.add(rs_1.getDouble("total_amount"));
+										    	  total_pieces.add(rs_1.getInt("total_pieces"));
+										    	  payment_method.add(rs_1.getString("payment_method"));
+										    	  city.add(rs_1.getString("city"));
+										    	  street.add(rs_1.getString("city"));
+										      }
+										      
+										      %>
+										      <div class=arr>
+										      <table>
+										      <tr>
+										      <td>Name</td>
+										      <td>Date and Time</td>
+										      <td>Total Pieces</td>
+										      <td>Total Cost</td>
+										      <td>Payment Method</td>
+										      <td>City</td>
+										      <td>Street</td>
+										      </tr>
+										      <%for(int k=0; k<fname.size(); k++){
+										    	  %>
+										    	  <tr>
+										    	  <td><%=fname.get(k)+" "+lname.get(k) %></td>
+										    	  <td><%=date_time.get(k) %></td>
+										    	  <td><%=total_pieces.get(k) %></td>
+										    	  <td><%=total_amount.get(k) %></td>
+										    	  <td><%=payment_method.get(k) %></td>
+										    	  <td><%=city.get(k) %></td>
+										    	  <td><%=street.get(k) %></td>
+										    	  </tr>					    	  						    	  
+										      <% }%>
+										      </table>
+										      </div>
+										      <%
+							    }
+							    else{
+							    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
+										      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
+										      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
+										      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
+										      " AND t.total_amount BETWEEN "+";";
+										      rs_1 = statement.executeQuery(sqlSelect);
+										      rs_1 = statement.executeQuery(sqlSelect);
+										      ArrayList<String> fname=new ArrayList<String>();
+										      ArrayList<String> lname=new ArrayList<String>();
+										      ArrayList<String> date_time = new ArrayList<String>();
+										      ArrayList<Double> total_amount = new ArrayList<Double>();
+										      ArrayList<Integer> total_pieces = new ArrayList<>();
+										      ArrayList<String> payment_method = new ArrayList<String>();
+										      ArrayList<String> city = new ArrayList<String>();
+										      ArrayList<String> street = new ArrayList<String>();
+										      while(rs_1.next()){
+										    	  fname.add(rs_1.getString("first_name"));
+										    	  lname.add(rs_1.getString("last_name"));
+										    	  date_time.add(rs_1.getString("date_time"));
+										    	  total_amount.add(rs_1.getDouble("total_amount"));
+										    	  total_pieces.add(rs_1.getInt("total_pieces"));
+										    	  payment_method.add(rs_1.getString("payment_method"));
+										    	  city.add(rs_1.getString("city"));
+										    	  street.add(rs_1.getString("city"));
+										      }
+										      %>
+										      <div class=arr>
+										      <table>
+										      <tr>
+										      <td>Name</td>
+										      <td>Date and Time</td>
+										      <td>Total Pieces</td>
+										      <td>Total Cost</td>
+										      <td>Payment Method</td>
+										      <td>City</td>
+										      <td>Street</td>
+										      </tr>
+										      <%for(int k=0; k<fname.size(); k++){
+										    	  %>
+										    	  <tr>
+										    	  <td><%=fname.get(k)+" "+lname.get(k) %></td>
+										    	  <td><%=date_time.get(k) %></td>
+										    	  <td><%=total_pieces.get(k) %></td>
+										    	  <td><%=total_amount.get(k) %></td>
+										    	  <td><%=payment_method.get(k) %></td>
+										    	  <td><%=city.get(k) %></td>
+										    	  <td><%=street.get(k) %></td>
+										    	  </tr>					    	  						    	  
+										      <% }%>
+										      </table>
+										      </div>
+				}
+	}
+		}
 	}
 
 	 %>
