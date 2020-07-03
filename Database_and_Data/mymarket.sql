@@ -1,6 +1,7 @@
 CREATE SCHEMA IF NOT EXISTS market;
 USE market;
 SET GLOBAL time_zone = '+3:00';
+SET SQL_SAFE_UPDATES = 0;
 CREATE TABLE market.customer(
 			card_number INT AUTO_INCREMENT,
             first_name VARCHAR(20) NOT NULL,
@@ -19,10 +20,10 @@ CREATE TABLE market.customer(
             
 CREATE TABLE market.store(
 			storeID INT AUTO_INCREMENT,
-            street VARCHAR(20),
-            address_number SMALLINT,
-            postal_code CHAR(5),
-            city VARCHAR(20),
+            street VARCHAR(20) NOT NULL,
+            address_number SMALLINT NOT NULL,
+            postal_code CHAR(5) NOT NULL,
+            city VARCHAR(20) NOT NULL,
             size SMALLINT,
             operating_hours CHAR(11),
             PRIMARY KEY(storeID));
@@ -164,6 +165,8 @@ AND cat.categoryID = p.categoryID
 AND cu.card_number = t.card_number 
 AND s.storeID = t.storeID 
 GROUP BY t.date_time, t.card_number;
+
+
 
 
 

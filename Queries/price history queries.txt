@@ -1,0 +1,8 @@
+Εμφανίζει όλο το ιστορικό τιμών για ένα προϊόν (με συγκεκριμένο barcode)
+SELECT barcode, price, start_date, IFNULL(end_date, NOW()) AS end_date FROM price_history WHERE barcode = 0850289;
+
+Γυρνάει την τωρινή τιμή ενός συγκεκριμένου προϊόντος, η οποία πρέπει να ελεγχθεί με αυτή που θέλει ο χρήστης να εισάγει
+SELECT price FROM product WHERE barcode = 0850289;
+
+Αλλάζει την τωρινή τιμή ενός  συγκεκριμένου προϊόντος 
+INSERT INTO price_history (barcode, price, start_date) VALUES ('6948323113', 20, NOW());
