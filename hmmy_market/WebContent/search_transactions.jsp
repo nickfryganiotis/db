@@ -584,7 +584,47 @@ while(rs_1.next()){
 			}
 		}
 	
-	
-%>
+	ArrayList<String> fname=new ArrayList<String>();
+    ArrayList<String> lname=new ArrayList<String>();
+    ArrayList<String> date_time = new ArrayList<String>();
+    ArrayList<Double> total_amount = new ArrayList<Double>();
+    ArrayList<Integer> total_pieces = new ArrayList<>();
+    ArrayList<String> payment_method = new ArrayList<String>();
+    ArrayList<String> city = new ArrayList<String>();
+    ArrayList<String> street = new ArrayList<String>();
+    while(rs_1.next()){
+  	  fname.add(rs_1.getString("first_name"));
+  	  lname.add(rs_1.getString("last_name"));
+  	  date_time.add(rs_1.getString("date_time"));
+  	  total_amount.add(rs_1.getDouble("total_amount"));
+  	  total_pieces.add(rs_1.getInt("total_pieces"));
+  	  payment_method.add(rs_1.getString("payment_method"));
+  	  city.add(rs_1.getString("city"));
+  	  street.add(rs_1.getString("city"));
+    }
+    %>
+    <table>
+    <tr>
+    <td>Name</td>
+    <td>Date and Time</td>
+    <td>Total Pieces</td>
+    <td>Total Cost</td>
+    <td>Payment Method</td>
+    <td>City</td>
+    <td>Street</td>
+    </tr>
+    <%for(int k=0; k<fname.size(); k++){
+  	  %>
+  	  <tr>
+  	  <td><%=fname.get(k)+" "+lname.get(k) %></td>
+  	  <td><%=date_time.get(k) %></td>
+  	  <td><%=total_pieces.get(k) %></td>
+  	  <td><%=total_amount.get(k) %></td>
+  	  <td><%=payment_method.get(k) %></td>
+  	  <td><%=city.get(k) %></td>
+  	  <td><%=street.get(k) %></td>
+  	  </tr>					    	  						    	  
+    <% }%>
+    </table>
 </body>
 </html>

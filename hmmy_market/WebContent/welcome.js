@@ -21,5 +21,5 @@ function check_store(t,cit){
 	    }	    
 	}
 	store = text+" "+store;
-	window.location.replace("find_transaction.jsp?store="+store);
+	window.location.replace("search_transactions.jsp?store="+store);
 }
