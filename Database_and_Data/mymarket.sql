@@ -168,5 +168,3 @@ GROUP BY t.date_time, t.card_number;
 
 
 
-
-
