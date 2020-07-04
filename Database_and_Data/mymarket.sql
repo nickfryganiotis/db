@@ -124,12 +124,8 @@ DELIMITER $$
 CREATE TRIGGER auto_update_price
 BEFORE INSERT ON price_history FOR EACH ROW
 BEGIN
-	IF NEW.end_date = NULL
+	IF ISNULL(NEW.end_date)
     THEN
-		UPDATE price_history
-		SET end_date = NEW.start_date
-        WHERE (NEW.barcode = barcode AND end_date = NULL);
-        
         UPDATE product
         SET price = NEW.price
         WHERE (barcode = NEW.barcode);
@@ -137,7 +133,7 @@ BEGIN
 END; 
 $$
 DELIMITER ;
-    
+
 
 LOAD DATA INFILE 'C:/Users/user/Desktop/Customer.txt' INTO TABLE customer FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n' (first_name,last_name,points,street,address_number,postal_code,city,family_members,pet,phone_number,date_of_birth);
 LOAD DATA INFILE 'C:/Users/user/Desktop/Category.txt' INTO TABLE category FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n' (category_name);
