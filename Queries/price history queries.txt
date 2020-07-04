@@ -5,4 +5,7 @@ SELECT barcode, price, start_date, IFNULL(end_date, NOW()) AS end_date FROM pric
 SELECT price FROM product WHERE barcode = 0850289;
 
 Αλλάζει την τωρινή τιμή ενός  συγκεκριμένου προϊόντος 
-INSERT INTO price_history (barcode, price, start_date) VALUES ('6282309', 20, NOW());
+
+
+UPDATE price_history SET end_date = NOW() WHERE (barcode = '6948323113' AND ISNULL(end_date));
+INSERT INTO price_history (barcode, price, start_date) VALUES ('6948323113', 20, NOW());
