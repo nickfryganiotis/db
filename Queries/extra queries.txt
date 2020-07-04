@@ -1,0 +1,29 @@
+Πόσα προϊόντα αγοράζονται (σε ποσότητα) βάσει του μεγέθος του καταστήματος
+
+SELECT SUM(t.total_pieces) AS sunolo, s.size AS megethos
+FROM product_transaction AS t, store AS s
+WHERE t.storeID = s.storeID 
+GROUP BY t.storeID
+ORDER BY size DESC;
+
+
+Ποσοστρό χρημάτων που ξοδεύονται συνολικά με κάρτα ή με μετρητά
+
+SELECT (ROUND(pp/p, 2) * 100) AS 'cash percentage' , ((1-ROUND(pp/p,2))*100) AS 'card percentage'
+FROM ((SELECT SUM(total_amount) AS pp
+		FROM product_transaction
+		WHERE payment_method = 'cash') AS ppp,
+	(SELECT SUM(total_amount) AS p
+	FROM product_transaction) AS pppp);
+
+    
+Ποσοστό συνολικών αγορών που γίνονται με κάρτα ή με μετρητά
+
+SELECT (ROUND(sindarta/ (sindarta +gautama), 2)*100) AS 'card percentage', (ROUND(gautama/ (sindarta +gautama), 2)*100) AS 'cash percentage'
+FROM (
+SELECT COUNT(*) AS sindarta
+FROM product_transaction
+WHERE payment_method = 'card') AS boudas,
+(SELECT COUNT(*) AS gautama
+FROM product_transaction
+WHERE payment_method = 'cash') AS buddha;
