@@ -40,6 +40,23 @@ if(barcode==null||barcode==""||price==null||price==""){
 	</form>
 	<%} 
 	else{
+		String Brc[] = barcode.split("");
+		boolean invlid = false;
+		for(int i=0; i<Brc.length; i++){
+			if((Brc[i].compareTo("0")<0)||(Brc[i].compareTo("9")>0)){
+				invlid = true;
+				break;
+				
+			}
+		}
+			if(invlid==true){
+				%>
+				<script>alert("This barcode is not proper. The barcode is a sequence of numbers. Please choose a proper price");
+	            window.location.replace("change_price.jsp?barcode=")
+	            </script>
+				<% 
+			}
+			else{
 		String username = "root";
 		String password = "";
 		Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -63,7 +80,6 @@ if(barcode==null||barcode==""||price==null||price==""){
 			boolean invalid = false;
 			for(int i=0; i<Price.length; i++){
 				if(((Price[i].compareTo("0")<0)||(Price[i].compareTo("9")>0))&(Price[i].compareTo(".")>0||Price[i].compareTo(".")<0)){
-					System.out.println(Price[i].compareTo("."));
 					invalid = true;
 					break;
 					
@@ -77,20 +93,39 @@ if(barcode==null||barcode==""||price==null||price==""){
 					<% 
 				}
 				else{
-					sqlSelect = "INSERT INTO price_history (barcode, price, start_date) VALUES ('"+barcode+"'"+", "+price+", NOW());";
+					sqlSelect = "SELECT price FROM product WHERE barcode = "+"'"+barcode+"'"+";";
 					rs_1 = statement.executeQuery(sqlSelect);
-					System.out.println(sqlSelect);
-					%>
-					<script>alert("You just changed the price of the product with barcode: "+<%=barcode%>);
-		            window.location.replace("welcome.jsp")
-		            </script>
-					<%
+					ArrayList<String> nowprice= new ArrayList<String>();
+					while(rs_1.next()){
+						nowprice.add(rs_1.getString("price"));
+					}	
+					System.out.println(nowprice);
+					if(nowprice.get(0).compareTo(price)==0){
+							%>
+							<script>alert("No changes in the product's price");
+			                window.location.replace("welcome.jsp")
+			                </script>
+							<% 
+					}
+					else{
+						String sql = "INSERT INTO price_history (barcode, price, start_date) VALUES ("+"'"+barcode+"'"+", "+price+", NOW());";
+						int result = statement.executeUpdate(sql);
+						%>
+						<script>alert("You just changed the price of the product with barcode: "+<%=barcode%>);
+			            window.location.replace("welcome.jsp")
+			            </script>
+			            <%
+					}
+					
+		            
+					
 					
 				}
 						
 				
 			}
 		
+}
 }%>
 </body>
 </html>

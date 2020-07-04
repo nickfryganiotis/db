@@ -34,6 +34,23 @@ if(barcode==null||barcode==""){
 	<% 
 }
 else{
+	String Brc[] = barcode.split("");
+	boolean invlid = false;
+	for(int i=0; i<Brc.length; i++){
+		if((Brc[i].compareTo("0")<0)||(Brc[i].compareTo("9")>0)){
+			invlid = true;
+			break;
+			
+		}
+	}
+		if(invlid==true){
+			%>
+			<script>alert("This barcode is not proper. The barcode is a sequence of numbers. Please choose a proper price");
+            window.location.replace("price_history.jsp?barcode=")
+            </script>
+			<% 
+		}
+		else{
 	String username = "root";
 	String password = "";
 	Class.forName("com.mysql.jdbc.Driver").newInstance();
@@ -77,7 +94,7 @@ else{
 		
 	<%
 	}
-	
+		}
 }
 %>
 </body>

@@ -105,7 +105,7 @@ addresses = s.getAddresses();
         <li><a href="#">Product prices</a>
         <ul class="subMenu">
         <li><a href ="price_history.jsp">Price History</a></li>
-        <li><a href ="#">Change the price<br> of a product</a></li>
+        <li><a href ="change_price.jsp">Change the price<br> of a product</a></li>
         </ul>
         </li>
     </ul>    
