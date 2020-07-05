@@ -68,7 +68,7 @@ CREATE TABLE market.offers(
 CREATE TABLE market.price_history(
 			start_date DATETIME DEFAULT CURRENT_TIMESTAMP,
             barcode VARCHAR(20),
-            price DOUBLE,
+            price DOUBLE NOT NULL,
             end_date DATETIME,
             PRIMARY KEY(start_date, barcode),
             FOREIGN KEY(barcode) REFERENCES product(barcode) ON UPDATE CASCADE);
