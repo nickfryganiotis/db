@@ -1,6 +1,7 @@
 CREATE SCHEMA IF NOT EXISTS market;
 USE market;
 #SET GLOBAL time_zone = '+3:00';
+SET GLOBAL local_infile=1;
 SET SQL_SAFE_UPDATES = 0;
 CREATE TABLE market.customer(
 			card_number INT AUTO_INCREMENT,
@@ -139,17 +140,17 @@ $$
 DELIMITER ;
 
 
-LOAD DATA INFILE 'C:/Users/user/Desktop/Customer.txt' INTO TABLE customer FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n' (first_name,last_name,points,street,address_number,postal_code,city,family_members,pet,phone_number,date_of_birth);
-LOAD DATA INFILE 'C:/Users/user/Desktop/Category.txt' INTO TABLE category FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n' (category_name);
-LOAD DATA INFILE 'C:/Users/user/Desktop/Store.txt' INTO TABLE store FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n' (street,address_number,postal_code,city,size,operating_hours);
-LOAD DATA INFILE 'C:/Users/user/Desktop/Telephone.txt' INTO TABLE telephone FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n';
-LOAD DATA INFILE 'C:/Users/user/Desktop/Product.txt' INTO TABLE product FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n' (product_name,brand_name,price,barcode,categoryID);
-LOAD DATA INFILE 'C:/Users/user/Desktop/Provides.txt' INTO TABLE provides FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (storeID, categoryID);
-LOAD DATA INFILE 'C:/Users/user/Desktop/Offers.txt' INTO TABLE offers FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n';
-LOAD DATA INFILE 'C:/Users/user/Desktop/Price_history1.txt' INTO TABLE price_history FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (start_date, barcode, price, end_date);
-LOAD DATA INFILE 'C:/Users/user/Desktop/Price_history2.txt' INTO TABLE price_history FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (start_date, barcode, price);
-LOAD DATA INFILE 'C:/Users/user/Desktop/Product_transaction.txt' INTO TABLE product_transaction FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (card_number, storeID, payment_method, date_time);
-LOAD DATA INFILE 'C:/Users/user/Desktop/Product_contains.txt' INTO TABLE product_contains FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (card_number,date_time, barcode, pieces);
+LOAD DATA LOCAL INFILE 'Customer.txt' INTO TABLE customer FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n' (first_name,last_name,points,street,address_number,postal_code,city,family_members,pet,phone_number,date_of_birth);
+LOAD DATA INFILE 'Category.txt' INTO TABLE category FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n' (category_name);
+LOAD DATA INFILE 'Store.txt' INTO TABLE store FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n' (street,address_number,postal_code,city,size,operating_hours);
+LOAD DATA INFILE 'Telephone.txt' INTO TABLE telephone FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n';
+LOAD DATA INFILE 'Product.txt' INTO TABLE product FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n' (product_name,brand_name,price,barcode,categoryID);
+LOAD DATA INFILE 'Provides.txt' INTO TABLE provides FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (storeID, categoryID);
+LOAD DATA INFILE 'Offers.txt' INTO TABLE offers FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\r\n';
+LOAD DATA INFILE 'Price_history1.txt' INTO TABLE price_history FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (start_date, barcode, price, end_date);
+LOAD DATA INFILE 'Price_history2.txt' INTO TABLE price_history FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (start_date, barcode, price);
+LOAD DATA INFILE 'Product_transaction.txt' INTO TABLE product_transaction FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (card_number, storeID, payment_method, date_time);
+LOAD DATA INFILE 'Product_contains.txt' INTO TABLE product_contains FIELDS TERMINATED BY ',' LINES TERMINATED BY '\r\n' (card_number,date_time, barcode, pieces);
 
 CREATE OR REPLACE VIEW customer_info AS
 SELECT first_name, last_name, points, street, address_number, postal_code, city, family_members, pet, age, phone_number
