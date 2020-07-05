@@ -112,7 +112,7 @@ addresses = s.getAddresses();
         <ul class="subMenu">
         <li><a href ="#">Insert</a>
         <ul class="SuperSubMenu">
-        <li><a href="insert_customer">Customer</a></li>
+        <li><a href="insert_customer.jsp">Customer</a></li>
         <li><a href="insert_store.jsp">Store</a></li>
         <li><a href="insert_product.jsp">Product</a></li>
         </ul>
@@ -129,6 +129,12 @@ addresses = s.getAddresses();
         <li><a href="#">Store</a></li>
         </ul>
         </li>
+        </ul>
+        </li>
+        <li><a href="#">Extra</a>
+        <ul class="subMenu">
+        <li><a href ="prod_per_size.jsp">Products bought per<br>store size</a></li>
+        <li><a href ="last_pie.jsp">Transaction percentages <br>per payment method </a></li>
         </ul>
         </li>
     </ul>    
