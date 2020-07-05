@@ -112,8 +112,9 @@ addresses = s.getAddresses();
         <ul class="subMenu">
         <li><a href ="#">Insert</a>
         <ul class="SuperSubMenu">
-        <li><a href="#">Customer</a></li>
-        <li><a href="#">Store</a></li>
+        <li><a href="insert_customer">Customer</a></li>
+        <li><a href="insert_store.jsp">Store</a></li>
+        <li><a href="insert_product.jsp">Product</a></li>
         </ul>
         </li>
         <li><a href ="#">Delete</a>

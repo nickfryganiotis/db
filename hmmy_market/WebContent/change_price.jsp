@@ -18,6 +18,7 @@ ResultSet rs_1= null;
 String price = request.getParameter("price");
 if(barcode==null||barcode==""||price==null||price==""){
 	%>
+	<h2>Please fill out all the boxes in order to change a price</h2>
 	<br>
 	<br>
 	<form method="get" action="change_price.jsp">
@@ -99,7 +100,6 @@ if(barcode==null||barcode==""||price==null||price==""){
 					while(rs_1.next()){
 						nowprice.add(rs_1.getString("price"));
 					}	
-					System.out.println(nowprice);
 					if(nowprice.get(0).compareTo(price)==0){
 							%>
 							<script>alert("No changes in the product's price");
