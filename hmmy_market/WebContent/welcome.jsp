@@ -108,6 +108,28 @@ addresses = s.getAddresses();
         <li><a href ="change_price.jsp">Change the price<br> of a product</a></li>
         </ul>
         </li>
+        <li><a href="#">Modifications</a>
+        <ul class="subMenu">
+        <li><a href ="#">Insert</a>
+        <ul class="SuperSubMenu">
+        <li><a href="#">Customer</a></li>
+        <li><a href="#">Store</a></li>
+        </ul>
+        </li>
+        <li><a href ="#">Delete</a>
+        <ul class="SuperSubMenu">
+        <li><a href="#">Customer</a></li>
+        <li><a href="#">Store</a></li>
+        </ul>
+        </li>
+        <li><a href ="#">Update</a>
+        <ul class="SuperSubMenu">
+        <li><a href="#">Customer</a></li>
+        <li><a href="#">Store</a></li>
+        </ul>
+        </li>
+        </ul>
+        </li>
     </ul>    
 </nav>
 </body>

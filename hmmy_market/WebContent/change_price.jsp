@@ -108,8 +108,10 @@ if(barcode==null||barcode==""||price==null||price==""){
 							<% 
 					}
 					else{
-						String sql = "INSERT INTO price_history (barcode, price, start_date) VALUES ("+"'"+barcode+"'"+", "+price+", NOW());";
+						String sql = "UPDATE price_history SET end_date = NOW() WHERE (barcode = "+"'"+barcode+"'"+" AND ISNULL(end_date));";
 						int result = statement.executeUpdate(sql);
+						sql = "INSERT INTO price_history (barcode, price, start_date) VALUES ("+"'"+barcode+"'"+", "+price+", NOW());";
+						result = statement.executeUpdate(sql);
 						%>
 						<script>alert("You just changed the price of the product with barcode: "+<%=barcode%>);
 			            window.location.replace("welcome.jsp")
