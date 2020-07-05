@@ -82,7 +82,6 @@ addresses = s.getAddresses();
                 </ul>
                 </li>
         <% cit++;}%>
-         <li><a id= "<%="store"+String.valueOf(t)%>" onclick ="check_store(<%=t %>)" href="#"> Choose all Cities</a></li>
     </ul>
     </li>
         <li><a href="customer_profile.jsp">Customers' Profile</a></li>

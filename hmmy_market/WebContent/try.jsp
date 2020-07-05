@@ -15,12 +15,10 @@ if(store==null){
 	try {
          FileReader reader = new FileReader("C:/Users/Dell/eclipse-workspace/hmmy_market/WebContent/files/store.txt");
          BufferedReader bufferedReader = new BufferedReader(reader);
-
          while ((line = bufferedReader.readLine()) != null) {
         	 store = line;
          }
          reader.close();
-
      } catch (IOException e) {
          e.printStackTrace();
      }
@@ -29,16 +27,13 @@ else{
 	try {
         FileWriter writer = new FileWriter("C:/Users/Dell/eclipse-workspace/hmmy_market/WebContent/files/store.txt",true);
         BufferedWriter bufferedWriter = new BufferedWriter(writer);
-
         bufferedWriter.write(store);
         bufferedWriter.newLine();
         bufferedWriter.close();
     } catch (IOException e) {
         e.printStackTrace();
     }
-
 }
-
 %>
 <%String connectionURL = "jdbc:mysql://localhost:3306/market";
 Connection connection = null;
@@ -60,16 +55,12 @@ while(rs_1.next()){
 %>
 <html>
 <head>
-
 <meta charset="ISO-8859-1">
 <title>Transactions</title>
 </head>
 <body>
-<%if(store!="Choose All Cities") {%>
-<h1>You chose <%=store%> store</h1>
 <p>Complete any of the following boxes</p>
-<%} %>
-<form method="get" action=<%="search_transactions.jsp?store="+store%>>
+<form method="get" action=<%="try.jsp?store="+store%>>
 		<table>
 		<tr>
 		<td>Beginning date:</td>
@@ -243,26 +234,26 @@ while(rs_1.next()){
 						    if(Payment_method_2==null){
 							  sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 						      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-						      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-						      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
+						      "AND s.storeID = t.storeID "+
+						      "AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
 						      " AND t.total_amount BETWEEN "+min_total_cost+ " AND "+max_total_cost +" AND t.payment_method = 'card';";
-						      rs_1 = statement.executeQuery(sqlSelect);
+						      //rs_1 = statement.executeQuery(sqlSelect);
 						    }
 						    else if(Payment_method_1==null){
 						    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 									      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-									      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-									      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
+									      "AND s.storeID = t.storeID "+
+									      "AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
 									      " AND t.total_amount BETWEEN "+min_total_cost+ " AND "+max_total_cost +" AND t.payment_method = 'cash';";
-						    	rs_1 = statement.executeQuery(sqlSelect);
+						    	//rs_1 = statement.executeQuery(sqlSelect);
 						    }
 						    else{
 						    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 									      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-									      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-									      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
+									      "AND s.storeID = t.storeID "+ 
+									      "AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
 									      " AND t.total_amount BETWEEN "+min_total_cost+ " AND "+max_total_cost +";";
-						    	rs_1 = statement.executeQuery(sqlSelect);
+						    	//rs_1 = statement.executeQuery(sqlSelect);
 						    }
 						    
 						}
@@ -286,26 +277,26 @@ while(rs_1.next()){
 							    if(Payment_method_2==null){
 								  sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 							      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-							      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-							      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
+							      "AND s.storeID = t.storeID "+
+							      "AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
 							      " AND t.payment_method = 'card';";
-							      rs_1 = statement.executeQuery(sqlSelect);
+							      //rs_1 = statement.executeQuery(sqlSelect);
 					             }
 							    else if(Payment_method_1==null){
 							    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 										      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-										      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-										      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
+										      "AND s.storeID = t.storeID "+
+										      "AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
 										      " AND t.payment_method = 'cash';";
-							    	rs_1 = statement.executeQuery(sqlSelect);
+							    	//rs_1 = statement.executeQuery(sqlSelect);
 							    } 
 							    else{
 							    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 										      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-										      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-										      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
+										      "AND s.storeID = t.storeID "+ 
+										      "AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
 										      ";";
-							    	rs_1 = statement.executeQuery(sqlSelect);
+							    	//rs_1 = statement.executeQuery(sqlSelect);
 							}
 						 }
 						}
@@ -334,26 +325,26 @@ while(rs_1.next()){
 							    if(Payment_method_2==null){
 								  sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 							      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-							      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-							      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ 
+							      "AND s.storeID = t.storeID "+ 
+							      "AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ 
 							      " AND t.total_amount BETWEEN "+min_total_cost+ " AND "+max_total_cost +" AND t.payment_method = 'card';";
-							      rs_1 = statement.executeQuery(sqlSelect);
+							      //rs_1 = statement.executeQuery(sqlSelect);
 							    }
 							    else if(Payment_method_1==null){
 							    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 										      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-										      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-										      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+
+										      "AND s.storeID = t.storeID "+ 
+										    "AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+
 										      " AND t.total_amount BETWEEN "+min_total_cost+ " AND "+max_total_cost +" AND t.payment_method = 'cash';";
-							    	rs_1 = statement.executeQuery(sqlSelect);
+							    	//rs_1 = statement.executeQuery(sqlSelect);
 							    }
 							    else{
 							    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 										      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-										      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-										      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+
+										      "AND s.storeID = t.storeID "+ 
+										      "AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+
 										      " AND t.total_amount BETWEEN "+min_total_cost+ " AND "+max_total_cost +";";
-							    	rs_1 = statement.executeQuery(sqlSelect);
+							    	//rs_1 = statement.executeQuery(sqlSelect);
 							    }
 							    
 							}
@@ -377,25 +368,25 @@ while(rs_1.next()){
 								    if(Payment_method_2==null){
 									  sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 								      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-								      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-								      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ 
+								      "AND s.storeID = t.storeID "+ 
+								      "AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ 
 								      " AND t.payment_method = 'card';";
-								      rs_1 = statement.executeQuery(sqlSelect);
+								     // rs_1 = statement.executeQuery(sqlSelect);
 						             }
 								    else if(Payment_method_1==null){
 								    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 											      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-											      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-											      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+
+											      "AND s.storeID = t.storeID "+
+											      "AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+
 											      " AND t.payment_method = 'cash';";
-								    	rs_1 = statement.executeQuery(sqlSelect);	      
+								   // 	rs_1 = statement.executeQuery(sqlSelect);	      
 								    } 
 								    else{
 								    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 											      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-											      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-											      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+";";
-								    	rs_1 = statement.executeQuery(sqlSelect);
+											      "AND s.storeID = t.storeID "+
+											      "AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+";";
+								 //   	rs_1 = statement.executeQuery(sqlSelect);
 								}
 							 }
 							}
@@ -425,26 +416,26 @@ while(rs_1.next()){
 						    if(Payment_method_2==null){
 							  sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 						      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-						      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-						      ")"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
+						      "AND s.storeID = t.storeID "+
+						      "AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
 						      " AND t.total_amount BETWEEN "+min_total_cost+ " AND "+max_total_cost +" AND t.payment_method = 'card';";
-						      rs_1 = statement.executeQuery(sqlSelect);
+						      //rs_1 = statement.executeQuery(sqlSelect);
 						    }
 						    else if(Payment_method_1==null){
 						    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 									      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-									      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-									      ")"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
+									      "AND s.storeID = t.storeID "
+									      + " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
 									      " AND t.total_amount BETWEEN "+min_total_cost+ " AND "+max_total_cost +" AND t.payment_method = 'cash';";
-						    	rs_1 = statement.executeQuery(sqlSelect);
+						    	//rs_1 = statement.executeQuery(sqlSelect);
 						    }
 						    else{
 						    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 									      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-									      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-									      ")"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
+									      "AND s.storeID = t.storeID " 
+									      + "AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
 									      " AND t.total_amount BETWEEN "+min_total_cost+ " AND "+max_total_cost +";";
-						    	rs_1 = statement.executeQuery(sqlSelect);
+						    	//rs_1 = statement.executeQuery(sqlSelect);
 						    }
 						    
 						}
@@ -468,26 +459,26 @@ while(rs_1.next()){
 							    if(Payment_method_2==null){
 								  sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 							      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-							      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-							      ")"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
+							      "AND s.storeID = t.storeID " 
+							      + "AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
 							      " AND t.payment_method = 'card';";
-							      rs_1 = statement.executeQuery(sqlSelect);
+							      //rs_1 = statement.executeQuery(sqlSelect);
 					             }
 							    else if(Payment_method_1==null){
 							    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 										      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-										      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-										      ")"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
+										      "AND s.storeID = t.storeID "
+										      + " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
 										      " AND t.payment_method = 'cash';";
-							    	rs_1 = statement.executeQuery(sqlSelect);
+							    	//rs_1 = statement.executeQuery(sqlSelect);
 							    } 
 							    else{
 							    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 										      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-										      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-										      ")"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
+										      "AND s.storeID = t.storeID "
+										      + "AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
 										      ";";
-										      
+										    //rs_1 = statement.executeQuery(sqlSelect);     
 							}
 						 }
 						}
@@ -516,26 +507,25 @@ while(rs_1.next()){
 							    if(Payment_method_2==null){
 								  sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 							      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-							      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-							      ")"+ 
-							      " AND t.total_amount BETWEEN "+min_total_cost+ " AND "+max_total_cost +" AND t.payment_method = 'card';";
-							      rs_1 = statement.executeQuery(sqlSelect);
+							      "AND s.storeID = t.storeID "+ 
+							       " AND t.total_amount BETWEEN "+min_total_cost+ " AND "+max_total_cost +" AND t.payment_method = 'card';";
+							      //rs_1 = statement.executeQuery(sqlSelect);
 							    }
 							    else if(Payment_method_1==null){
 							    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 										      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-										      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-										      ")"+
+										      "AND s.storeID = t.storeID "
+										      +
 										      " AND t.total_amount BETWEEN "+min_total_cost+ " AND "+max_total_cost +" AND t.payment_method = 'cash';";
-							    	rs_1 = statement.executeQuery(sqlSelect);
+							    	//rs_1 = statement.executeQuery(sqlSelect);
 							    }
 							    else{
 							    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 										      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-										      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-										      ")"+
+										      "AND s.storeID = t.storeID "
+										      +
 										      " AND t.total_amount BETWEEN "+min_total_cost+ " AND "+max_total_cost +";";
-							    	rs_1 = statement.executeQuery(sqlSelect);
+							    	//rs_1 = statement.executeQuery(sqlSelect);
 							    }
 							    
 							}
@@ -559,25 +549,25 @@ while(rs_1.next()){
 								    if(Payment_method_2==null){
 									  sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 								      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-								      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-								      ")"+ 
+								      "AND s.storeID = t.storeID " 
+								      + 
 								      " AND t.payment_method = 'card';";
-								      rs_1 = statement.executeQuery(sqlSelect);
+								      //rs_1 = statement.executeQuery(sqlSelect);
 						             }
 								    else if(Payment_method_1==null){
 								    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 											      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-											      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
-											      ")"+
+											      "AND s.storeID = t.storeID " 
+											      +
 											      " AND t.payment_method = 'cash';";
-								    	rs_1 = statement.executeQuery(sqlSelect);	      
+								    	//rs_1 = statement.executeQuery(sqlSelect);	      
 								    } 
 								    else{
 								    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
 											      "FROM product_transaction t, customer c, store s WHERE c.card_number = t.card_number "+
-											      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
+											      "AND s.storeID = t.storeID "+ 
 											      ")"+";";
-								    	rs_1 = statement.executeQuery(sqlSelect);
+								    	
 								}
 							 }
 							}
@@ -585,6 +575,7 @@ while(rs_1.next()){
 					}
 				}
 			}
+			rs_1 = statement.executeQuery(sqlSelect);
 			ArrayList<String> fname=new ArrayList<String>();
 		    ArrayList<String> lname=new ArrayList<String>();
 		    ArrayList<String> date_time = new ArrayList<String>();
@@ -618,6 +609,7 @@ while(rs_1.next()){
 		  	  </ul>				
 		  	  	    	  						    	  
 		    <% }%>
+		    
 			<%
 			}
 		else{
@@ -681,7 +673,7 @@ while(rs_1.next()){
 							"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 							"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
 							"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
-						    rs_1 = statement.executeQuery(sqlSelect);
+						    //rs_1 = statement.executeQuery(sqlSelect);
 						     
 						     
 						    }
@@ -702,7 +694,7 @@ while(rs_1.next()){
 										"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 										"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
 										"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
-						    	        rs_1 = statement.executeQuery(sqlSelect);
+						    	        //rs_1 = statement.executeQuery(sqlSelect);
 						    	        
 						    }
 						    else{
@@ -721,7 +713,7 @@ while(rs_1.next()){
 										"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 										"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
 										"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
-						    	        rs_1 = statement.executeQuery(sqlSelect);
+						    	        //rs_1 = statement.executeQuery(sqlSelect);
 						    	        
 						    }
 						    
@@ -760,7 +752,7 @@ while(rs_1.next()){
 											"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 											"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
 											";";
-							    	        rs_1 = statement.executeQuery(sqlSelect);
+							    	       // rs_1 = statement.executeQuery(sqlSelect);
 					             }
 							    else if(Payment_method_1==null){
 							    	sqlSelect ="SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
@@ -779,7 +771,7 @@ while(rs_1.next()){
 											"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 											"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
 											";";
-							    	     rs_1 = statement.executeQuery(sqlSelect);
+							    	     //rs_1 = statement.executeQuery(sqlSelect);
 							    } 
 							    else{
 							    	sqlSelect ="SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
@@ -797,7 +789,7 @@ while(rs_1.next()){
 											"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 											"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
 											";";
-							    	     rs_1 = statement.executeQuery(sqlSelect);
+							    	     //rs_1 = statement.executeQuery(sqlSelect);
 							}
 						 }
 						}
@@ -840,7 +832,7 @@ while(rs_1.next()){
 												"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 												"WHERE 1=1 "+
 												"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
-											    rs_1 = statement.executeQuery(sqlSelect);
+											    //rs_1 = statement.executeQuery(sqlSelect);
 							    }
 							    else if(Payment_method_1==null){
 							    	 sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
@@ -859,7 +851,7 @@ while(rs_1.next()){
 												"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 												"WHERE 1=1 "+
 												"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
-											    rs_1 = statement.executeQuery(sqlSelect);
+											    //rs_1 = statement.executeQuery(sqlSelect);
 							    }
 							    else{
 							    	 sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
@@ -877,7 +869,7 @@ while(rs_1.next()){
 												"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 												"WHERE 1=1 "+
 												"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
-											    rs_1 = statement.executeQuery(sqlSelect);
+											    //rs_1 = statement.executeQuery(sqlSelect);
 							    }
 							    
 							}
@@ -915,7 +907,7 @@ while(rs_1.next()){
 													"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 													"WHERE 1=1 "+
 													";";
-												    rs_1 = statement.executeQuery(sqlSelect);
+												//    rs_1 = statement.executeQuery(sqlSelect);
 						             }
 								    else if(Payment_method_1==null){
 								    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
@@ -934,7 +926,7 @@ while(rs_1.next()){
 												"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 												"WHERE 1=1 "+
 												";";
-											    rs_1 = statement.executeQuery(sqlSelect);   
+											  //  rs_1 = statement.executeQuery(sqlSelect);   
 								    } 
 								    else{
 								    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
@@ -952,7 +944,7 @@ while(rs_1.next()){
 												"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 												"WHERE 1=1 "+
 												";";
-											    rs_1 = statement.executeQuery(sqlSelect);
+											//    rs_1 = statement.executeQuery(sqlSelect);
 								}
 							 }
 							}
@@ -995,7 +987,7 @@ while(rs_1.next()){
 											"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 											"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
 											"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
-										    rs_1 = statement.executeQuery(sqlSelect);
+										  //  rs_1 = statement.executeQuery(sqlSelect);
 						    }
 						    else if(Payment_method_1==null){
 						    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
@@ -1013,7 +1005,7 @@ while(rs_1.next()){
 										"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 										"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
 										"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
-									    rs_1 = statement.executeQuery(sqlSelect);
+									    //rs_1 = statement.executeQuery(sqlSelect);
 						    }
 						    else{
 						    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
@@ -1030,7 +1022,7 @@ while(rs_1.next()){
 										"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 										"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
 										"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
-									    rs_1 = statement.executeQuery(sqlSelect);
+									    //rs_1 = statement.executeQuery(sqlSelect);
 						    }
 						    
 						}
@@ -1067,7 +1059,7 @@ while(rs_1.next()){
 											"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 											"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
 											";";
-										    rs_1 = statement.executeQuery(sqlSelect);
+										    //rs_1 = statement.executeQuery(sqlSelect);
 					             }
 							    else if(Payment_method_1==null){
 							    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
@@ -1085,7 +1077,7 @@ while(rs_1.next()){
 											"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 											"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
 											";";
-										    rs_1 = statement.executeQuery(sqlSelect);
+										    //rs_1 = statement.executeQuery(sqlSelect);
 							    } 
 							    else{
 							    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
@@ -1102,7 +1094,7 @@ while(rs_1.next()){
 											"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 											"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
 											";";
-										    rs_1 = statement.executeQuery(sqlSelect);
+										    //rs_1 = statement.executeQuery(sqlSelect);
 							}
 						 }
 						}
@@ -1144,7 +1136,7 @@ while(rs_1.next()){
 											"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 											"WHERE 1=1 "+
 											"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
-										    rs_1 = statement.executeQuery(sqlSelect);
+										    //rs_1 = statement.executeQuery(sqlSelect);
 							    }
 							    else if(Payment_method_1==null){
 							    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
@@ -1162,7 +1154,7 @@ while(rs_1.next()){
 											"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 											"WHERE 1=1 "+
 											"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
-										    rs_1 = statement.executeQuery(sqlSelect);
+										    //rs_1 = statement.executeQuery(sqlSelect);
 							    }
 							    else{
 							    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
@@ -1179,7 +1171,7 @@ while(rs_1.next()){
 											"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 											"WHERE 1=1 "+
 											"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
-										    rs_1 = statement.executeQuery(sqlSelect);
+										    //rs_1 = statement.executeQuery(sqlSelect);
 							    }
 							    
 							}
@@ -1216,7 +1208,7 @@ while(rs_1.next()){
 												"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 												"WHERE 1=1 "+
 												";";
-											    rs_1 = statement.executeQuery(sqlSelect);
+											  //  rs_1 = statement.executeQuery(sqlSelect);
 						             }
 								    else if(Payment_method_1==null){
 								    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
@@ -1234,7 +1226,7 @@ while(rs_1.next()){
 												"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 												"WHERE 1=1 "+
 												";";
-											    rs_1 = statement.executeQuery(sqlSelect);      
+											//    rs_1 = statement.executeQuery(sqlSelect);      
 								    } 
 								    else{
 								    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
@@ -1251,50 +1243,55 @@ while(rs_1.next()){
 												"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
 												"WHERE 1=1 "+
 												";";
-											    rs_1 = statement.executeQuery(sqlSelect);
+								    	//rs_1 = statement.executeQuery(sqlSelect);
 								}
 							 }
 							}
 						}
 					}
 				}
-			}
-			ArrayList<String> fname=new ArrayList<String>();
-		    ArrayList<String> lname=new ArrayList<String>();
-		    ArrayList<String> date_time = new ArrayList<String>();
-		    ArrayList<Double> total_amount = new ArrayList<Double>();
-		    ArrayList<Integer> total_pieces = new ArrayList<>();
-		    ArrayList<String> payment_method = new ArrayList<String>();
-		    ArrayList<String> city = new ArrayList<String>();
-		    ArrayList<String> street = new ArrayList<String>();
-		    while(rs_1.next()){
-		  	  fname.add(rs_1.getString("first_name"));
-		  	  lname.add(rs_1.getString("last_name"));
-		  	  date_time.add(rs_1.getString("date_time"));
-		  	  total_amount.add(rs_1.getDouble("total_amount"));
-		  	  total_pieces.add(rs_1.getInt("total_pieces"));
-		  	  payment_method.add(rs_1.getString("payment_method"));
-		  	  city.add(rs_1.getString("city"));
-		  	  street.add(rs_1.getString("city"));
-		    }
-		    %>
-		    
-		    <%for(int k=0; k<fname.size(); k++){
-		  	  %>
-		  	  <ul>
-		  	  <li><%="Name: "+fname.get(k)+" "+lname.get(k) %></li>
-		  	  <li><%="Date time: "+date_time.get(k) %></li>
-		  	  <li><%="Total pieces: "+ total_pieces.get(k) %></li>
-		  	  <li><%="Total amount: "+total_amount.get(k) %></li>
-		  	  <li><%="Payment method: "+payment_method.get(k) %></li>
-		  	  <li><%="City: "+city.get(k) %></li>
-		  	  <li><%="Street "+street.get(k) %></li>
-		  	  </ul>				
-		  	  	    	  						    	  
-		    <% }
-		}
 			
-		}
+			}
+			rs_1 = statement.executeQuery(sqlSelect);
+		ArrayList<String> kname=new ArrayList<String>();
+	    ArrayList<String> pname=new ArrayList<String>();
+	    ArrayList<String> pdate_time = new ArrayList<String>();
+	    ArrayList<Double> ptotal_amount = new ArrayList<Double>();
+	    ArrayList<Integer> ptotal_pieces = new ArrayList<>();
+	    ArrayList<String> ppayment_method = new ArrayList<String>();
+	    ArrayList<String> pcity = new ArrayList<String>();
+	    ArrayList<String> pstreet = new ArrayList<String>();
+	    while(rs_1.next()){
+	  	  kname.add(rs_1.getString("first_name"));
+	  	  pname.add(rs_1.getString("last_name"));
+	  	  pdate_time.add(rs_1.getString("date_time"));
+	  	  ptotal_amount.add(rs_1.getDouble("total_amount"));
+	  	  ptotal_pieces.add(rs_1.getInt("total_pieces"));
+	  	  ppayment_method.add(rs_1.getString("payment_method"));
+	  	  pcity.add(rs_1.getString("city"));
+	  	  pstreet.add(rs_1.getString("city"));
+	    }
+	    %>
+	    
+	    <%for(int k=0; k<kname.size(); k++){
+	  	  %>
+	  	  <ul>
+	  	  <li><%="Name: "+kname.get(k)+" "+pname.get(k) %></li>
+	  	  <li><%="Date time: "+pdate_time.get(k) %></li>
+	  	  <li><%="Total pieces: "+ ptotal_pieces.get(k) %></li>
+	  	  <li><%="Total amount: "+ptotal_amount.get(k) %></li>
+	  	  <li><%="Payment method: "+ppayment_method.get(k) %></li>
+	  	  <li><%="City: "+pcity.get(k) %></li>
+	  	  <li><%="Street "+pstreet.get(k) %></li>
+	  	  </ul>				
+	  	  <% 
+		}	
+	
+	    %>
+	    
+	    <%
+	}
+	}
 	%>
 	
 </body>
