@@ -297,6 +297,7 @@ while(rs_1.next()){
 										      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
 										      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
 										      " AND t.payment_method = 'cash';";
+							    	rs_1 = statement.executeQuery(sqlSelect);
 							    } 
 							    else{
 							    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
@@ -304,6 +305,7 @@ while(rs_1.next()){
 										      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
 										      ")AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
 										      ";";
+							    	rs_1 = statement.executeQuery(sqlSelect);
 							}
 						 }
 						}
@@ -477,6 +479,7 @@ while(rs_1.next()){
 										      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
 										      ")"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
 										      " AND t.payment_method = 'cash';";
+							    	rs_1 = statement.executeQuery(sqlSelect);
 							    } 
 							    else{
 							    	sqlSelect ="SELECT c.first_name, c.last_name, t.date_time, t.total_amount, t.total_pieces, t.payment_method, s.city, s.street "+
@@ -484,6 +487,7 @@ while(rs_1.next()){
 										      "AND s.storeID = t.storeID AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'" + " AND street = "+"'"+Store[2]+"'"+
 										      ")"+ " AND t.total_pieces BETWEEN "+min_quantity+" AND "+ max_quantity+
 										      ";";
+										      
 							}
 						 }
 						}
@@ -626,7 +630,644 @@ while(rs_1.next()){
 			<%
 			}
 		else{
-			
+			if(ignore_dates==null){
+				if(year_2.compareTo(year_1)<0){
+					year_2 = year_1;
+					month_2=month_1;
+					int num = Integer.valueOf(day_1);
+					num++;
+					day_2=String.valueOf(num);
+				}
+				else if(year_2.compareTo(year_1)==0){
+					if(month_2.compareTo(month_1)<0){
+						month_2 = month_1;
+						int num = Integer.valueOf(day_1);
+						num++;
+						day_2=String.valueOf(num);
+					}
+					else if(month_2.compareTo(month_1)==0){
+						if(day_2.compareTo(day_1)<=0){
+							int num = Integer.valueOf(day_1);
+							num++;
+							day_2=String.valueOf(num);
+						}
+					}
+				}
+				beginning_date = year_1+"-"+month_1+"-"+day_1;
+				ending_date = year_2+"-"+month_2+"-"+day_2;
+				if(min_quantity!=""){
+					if(max_quantity==""||max_quantity.compareTo(min_quantity)<0){
+						max_quantity=min_quantity;
+					}
+					
+					if(min_total_cost!=""){
+						if(max_total_cost == ""||max_total_cost.compareTo(min_total_cost)<0){
+							max_total_cost = min_total_cost;
+						}						
+						if(Payment_method_1==null &Payment_method_2==null){
+							%>
+							<script type="text/javascript">
+							alert("Please select at least one payment method");
+							</script>
+							<%
+						}
+						else{
+							 
+						    if(Payment_method_2==null){
+							  sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+						    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+							"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+							"WHERE t.date_time = c.date_time "+
+						    "AND t.card_number = c.card_number "+ 
+							"AND p.barcode = c.barcode "+
+							"AND cat.categoryID = p.categoryID "+
+							"AND cu.card_number = t.card_number "+
+							"AND s.storeID = t.storeID "+
+							"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+							"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+							"AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+" "+
+							"AND t.payment_method = 'card' "+
+							"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+							"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
+							"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
+						    rs_1 = statement.executeQuery(sqlSelect);
+						     
+						     
+						    }
+						    else if(Payment_method_1==null){
+						    	sqlSelect ="SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+									    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+										"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+										"WHERE t.date_time = c.date_time "+
+									    "AND t.card_number = c.card_number "+ 
+										"AND p.barcode = c.barcode "+
+										"AND cat.categoryID = p.categoryID "+
+										"AND cu.card_number = t.card_number "+
+										"AND s.storeID = t.storeID "+
+										"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+										"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+										"AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+" "+
+										"AND t.payment_method = 'cash' "+
+										"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+										"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
+										"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
+						    	        rs_1 = statement.executeQuery(sqlSelect);
+						    	        
+						    }
+						    else{
+						    	sqlSelect ="SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+									    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+										"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+										"WHERE t.date_time = c.date_time "+
+									    "AND t.card_number = c.card_number "+ 
+										"AND p.barcode = c.barcode "+
+										"AND cat.categoryID = p.categoryID "+
+										"AND cu.card_number = t.card_number "+
+										"AND s.storeID = t.storeID "+
+										"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+										"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+										"AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+" "+
+										"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+										"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
+										"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
+						    	        rs_1 = statement.executeQuery(sqlSelect);
+						    	        
+						    }
+						    
+						}
+					}
+					else{
+						if(max_total_cost!=""){%>
+						<script>alert("Please fill out first the box 'From:' of Total Cost");
+						</script>
+					<% 	
+					}
+						else{
+							if(Payment_method_1==null &Payment_method_2==null){
+								%>
+								<script type="text/javascript">
+								alert("Please select at least one payment method");
+								</script>
+								<%
+							}
+							else{
+								 
+							    if(Payment_method_2==null){
+							    	sqlSelect ="SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+										    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+											"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+											"WHERE t.date_time = c.date_time "+
+										    "AND t.card_number = c.card_number "+ 
+											"AND p.barcode = c.barcode "+
+											"AND cat.categoryID = p.categoryID "+
+											"AND cu.card_number = t.card_number "+
+											"AND s.storeID = t.storeID "+
+											"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+											"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+											"AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+" "+
+											"AND t.payment_method = 'card' "+
+											"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+											"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
+											";";
+							    	        rs_1 = statement.executeQuery(sqlSelect);
+					             }
+							    else if(Payment_method_1==null){
+							    	sqlSelect ="SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+										    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+											"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+											"WHERE t.date_time = c.date_time "+
+										    "AND t.card_number = c.card_number "+ 
+											"AND p.barcode = c.barcode "+
+											"AND cat.categoryID = p.categoryID "+
+											"AND cu.card_number = t.card_number "+
+											"AND s.storeID = t.storeID "+
+											"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+											"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+											"AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+" "+
+											"AND t.payment_method = 'cash' "+
+											"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+											"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
+											";";
+							    	     rs_1 = statement.executeQuery(sqlSelect);
+							    } 
+							    else{
+							    	sqlSelect ="SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+										    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+											"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+											"WHERE t.date_time = c.date_time "+
+										    "AND t.card_number = c.card_number "+ 
+											"AND p.barcode = c.barcode "+
+											"AND cat.categoryID = p.categoryID "+
+											"AND cu.card_number = t.card_number "+
+											"AND s.storeID = t.storeID "+
+											"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+											"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+											"AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+" "+
+											"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+											"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
+											";";
+							    	     rs_1 = statement.executeQuery(sqlSelect);
+							}
+						 }
+						}
+					}
+				}
+				else{
+					if(max_quantity!=""){%>
+						<script>alert("Please fill out first the box 'From:' of Total pieces");
+						</script>
+					<%	
+					}
+					else{
+						if(min_total_cost!=""){
+							if(max_total_cost == ""||max_total_cost.compareTo(min_total_cost)<0){
+								max_total_cost = min_total_cost;
+							}						
+							if(Payment_method_1==null &Payment_method_2==null){
+								%>
+								<script type="text/javascript">
+								alert("Please select at least one payment method");
+								</script>
+								<%
+							}
+							else{
+								 
+							    if(Payment_method_2==null){
+							    	 sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+											    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+												"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+												"WHERE t.date_time = c.date_time "+
+											    "AND t.card_number = c.card_number "+ 
+												"AND p.barcode = c.barcode "+
+												"AND cat.categoryID = p.categoryID "+
+												"AND cu.card_number = t.card_number "+
+												"AND s.storeID = t.storeID "+
+												"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+												"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+												"AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+" "+
+												"AND t.payment_method = 'card' "+
+												"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+												"WHERE 1=1 "+
+												"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
+											    rs_1 = statement.executeQuery(sqlSelect);
+							    }
+							    else if(Payment_method_1==null){
+							    	 sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+											    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+												"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+												"WHERE t.date_time = c.date_time "+
+											    "AND t.card_number = c.card_number "+ 
+												"AND p.barcode = c.barcode "+
+												"AND cat.categoryID = p.categoryID "+
+												"AND cu.card_number = t.card_number "+
+												"AND s.storeID = t.storeID "+
+												"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+												"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+												"AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+" "+
+												"AND t.payment_method = 'cash' "+
+												"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+												"WHERE 1=1 "+
+												"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
+											    rs_1 = statement.executeQuery(sqlSelect);
+							    }
+							    else{
+							    	 sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+											    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+												"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+												"WHERE t.date_time = c.date_time "+
+											    "AND t.card_number = c.card_number "+ 
+												"AND p.barcode = c.barcode "+
+												"AND cat.categoryID = p.categoryID "+
+												"AND cu.card_number = t.card_number "+
+												"AND s.storeID = t.storeID "+
+												"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+												"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+												"AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+" "+
+												"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+												"WHERE 1=1 "+
+												"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
+											    rs_1 = statement.executeQuery(sqlSelect);
+							    }
+							    
+							}
+						}
+						else{
+							if(max_total_cost!=""){%>
+							<script>alert("Please fill out first the box 'From:' of Total Cost");
+							</script>
+						<% 	
+						}
+							else{
+								if(Payment_method_1==null &Payment_method_2==null){
+									%>
+									<script type="text/javascript">
+									alert("Please select at least one payment method");
+									</script>
+									<%
+								}
+								else{
+									 
+								    if(Payment_method_2==null){
+								    	 sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+												    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+													"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+													"WHERE t.date_time = c.date_time "+
+												    "AND t.card_number = c.card_number "+ 
+													"AND p.barcode = c.barcode "+
+													"AND cat.categoryID = p.categoryID "+
+													"AND cu.card_number = t.card_number "+
+													"AND s.storeID = t.storeID "+
+													"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+													"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+													"AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+" "+
+													"AND t.payment_method = 'card' "+
+													"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+													"WHERE 1=1 "+
+													";";
+												    rs_1 = statement.executeQuery(sqlSelect);
+						             }
+								    else if(Payment_method_1==null){
+								    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+											    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+												"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+												"WHERE t.date_time = c.date_time "+
+											    "AND t.card_number = c.card_number "+ 
+												"AND p.barcode = c.barcode "+
+												"AND cat.categoryID = p.categoryID "+
+												"AND cu.card_number = t.card_number "+
+												"AND s.storeID = t.storeID "+
+												"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+												"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+												"AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+" "+
+												"AND t.payment_method = 'cash' "+
+												"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+												"WHERE 1=1 "+
+												";";
+											    rs_1 = statement.executeQuery(sqlSelect);   
+								    } 
+								    else{
+								    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+											    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+												"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+												"WHERE t.date_time = c.date_time "+
+											    "AND t.card_number = c.card_number "+ 
+												"AND p.barcode = c.barcode "+
+												"AND cat.categoryID = p.categoryID "+
+												"AND cu.card_number = t.card_number "+
+												"AND s.storeID = t.storeID "+
+												"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+												"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+												"AND t.date_time BETWEEN "+"'"+beginning_date+"'"+ " AND "+"'"+ending_date+"'"+" "+
+												"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+												"WHERE 1=1 "+
+												";";
+											    rs_1 = statement.executeQuery(sqlSelect);
+								}
+							 }
+							}
+						}
+					}
+				}
+			}
+			else{
+				if(min_quantity!=""){
+					if(max_quantity==""||max_quantity.compareTo(min_quantity)<0){
+						max_quantity=min_quantity;
+					}
+					
+					if(min_total_cost!=""){
+						if(max_total_cost == ""||max_total_cost.compareTo(min_total_cost)<0){
+							max_total_cost = min_total_cost;
+						}						
+						if(Payment_method_1==null &Payment_method_2==null){
+							%>
+							<script type="text/javascript">
+							alert("Please select at least one payment method");
+							</script>
+							<%
+						}
+						else{
+							 
+						    if(Payment_method_2==null){
+						    	 sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+										    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+											"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+											"WHERE t.date_time = c.date_time "+
+										    "AND t.card_number = c.card_number "+ 
+											"AND p.barcode = c.barcode "+
+											"AND cat.categoryID = p.categoryID "+
+											"AND cu.card_number = t.card_number "+
+											"AND s.storeID = t.storeID "+
+											"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+											"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+											"AND t.payment_method = 'card' "+
+											"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+											"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
+											"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
+										    rs_1 = statement.executeQuery(sqlSelect);
+						    }
+						    else if(Payment_method_1==null){
+						    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+									    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+										"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+										"WHERE t.date_time = c.date_time "+
+									    "AND t.card_number = c.card_number "+ 
+										"AND p.barcode = c.barcode "+
+										"AND cat.categoryID = p.categoryID "+
+										"AND cu.card_number = t.card_number "+
+										"AND s.storeID = t.storeID "+
+										"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+										"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+										"AND t.payment_method = 'cash' "+
+										"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+										"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
+										"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
+									    rs_1 = statement.executeQuery(sqlSelect);
+						    }
+						    else{
+						    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+									    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+										"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+										"WHERE t.date_time = c.date_time "+
+									    "AND t.card_number = c.card_number "+ 
+										"AND p.barcode = c.barcode "+
+										"AND cat.categoryID = p.categoryID "+
+										"AND cu.card_number = t.card_number "+
+										"AND s.storeID = t.storeID "+
+										"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+										"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+										"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+										"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
+										"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
+									    rs_1 = statement.executeQuery(sqlSelect);
+						    }
+						    
+						}
+					}
+					else{
+						if(max_total_cost!=""){%>
+						<script>alert("Please fill out first the box 'From:' of Total Cost");
+						</script>
+					<% 	
+					}
+						else{
+							if(Payment_method_1==null &Payment_method_2==null){
+								%>
+								<script type="text/javascript">
+								alert("Please select at least one payment method");
+								</script>
+								<%
+							}
+							else{
+								 
+							    if(Payment_method_2==null){
+							    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+										    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+											"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+											"WHERE t.date_time = c.date_time "+
+										    "AND t.card_number = c.card_number "+ 
+											"AND p.barcode = c.barcode "+
+											"AND cat.categoryID = p.categoryID "+
+											"AND cu.card_number = t.card_number "+
+											"AND s.storeID = t.storeID "+
+											"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+											"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+											"AND t.payment_method = 'card' "+
+											"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+											"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
+											";";
+										    rs_1 = statement.executeQuery(sqlSelect);
+					             }
+							    else if(Payment_method_1==null){
+							    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+										    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+											"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+											"WHERE t.date_time = c.date_time "+
+										    "AND t.card_number = c.card_number "+ 
+											"AND p.barcode = c.barcode "+
+											"AND cat.categoryID = p.categoryID "+
+											"AND cu.card_number = t.card_number "+
+											"AND s.storeID = t.storeID "+
+											"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+											"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+											"AND t.payment_method = 'cash' "+
+											"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+											"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
+											";";
+										    rs_1 = statement.executeQuery(sqlSelect);
+							    } 
+							    else{
+							    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+										    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+											"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+											"WHERE t.date_time = c.date_time "+
+										    "AND t.card_number = c.card_number "+ 
+											"AND p.barcode = c.barcode "+
+											"AND cat.categoryID = p.categoryID "+
+											"AND cu.card_number = t.card_number "+
+											"AND s.storeID = t.storeID "+
+											"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+											"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+											"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+											"WHERE 1=1 AND total_items BETWEEN "+min_quantity+" AND "+ max_quantity+" "+
+											";";
+										    rs_1 = statement.executeQuery(sqlSelect);
+							}
+						 }
+						}
+					}
+				}
+				else{
+					if(max_quantity!=""){%>
+						<script>alert("Please fill out first the box 'From:' of Total pieces");
+						</script>
+					<%	
+					}
+					else{
+						if(min_total_cost!=""){
+							if(max_total_cost == ""||max_total_cost.compareTo(min_total_cost)<0){
+								max_total_cost = min_total_cost;
+							}						
+							if(Payment_method_1==null &Payment_method_2==null){
+								%>
+								<script type="text/javascript">
+								alert("Please select at least one payment method");
+								</script>
+								<%
+							}
+							else{
+								 
+							    if(Payment_method_2==null){
+							    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+										    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+											"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+											"WHERE t.date_time = c.date_time "+
+										    "AND t.card_number = c.card_number "+ 
+											"AND p.barcode = c.barcode "+
+											"AND cat.categoryID = p.categoryID "+
+											"AND cu.card_number = t.card_number "+
+											"AND s.storeID = t.storeID "+
+											"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+											"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+											"AND t.payment_method = 'card' "+
+											"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+											"WHERE 1=1 "+
+											"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
+										    rs_1 = statement.executeQuery(sqlSelect);
+							    }
+							    else if(Payment_method_1==null){
+							    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+										    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+											"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+											"WHERE t.date_time = c.date_time "+
+										    "AND t.card_number = c.card_number "+ 
+											"AND p.barcode = c.barcode "+
+											"AND cat.categoryID = p.categoryID "+
+											"AND cu.card_number = t.card_number "+
+											"AND s.storeID = t.storeID "+
+											"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+											"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+											"AND t.payment_method = 'cash' "+
+											"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+											"WHERE 1=1 "+
+											"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
+										    rs_1 = statement.executeQuery(sqlSelect);
+							    }
+							    else{
+							    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+										    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+											"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+											"WHERE t.date_time = c.date_time "+
+										    "AND t.card_number = c.card_number "+ 
+											"AND p.barcode = c.barcode "+
+											"AND cat.categoryID = p.categoryID "+
+											"AND cu.card_number = t.card_number "+
+											"AND s.storeID = t.storeID "+
+											"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+											"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+											"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+											"WHERE 1=1 "+
+											"AND total_price BETWEEN "+max_total_cost+" AND "+max_total_cost+";";
+										    rs_1 = statement.executeQuery(sqlSelect);
+							    }
+							    
+							}
+						}
+						else{
+							if(max_total_cost!=""){%>
+							<script>alert("Please fill out first the box 'From:' of Total Cost");
+							</script>
+						<% 	
+						}
+							else{
+								if(Payment_method_1==null &Payment_method_2==null){
+									%>
+									<script type="text/javascript">
+									alert("Please select at least one payment method");
+									</script>
+									<%
+								}
+								else{
+									 
+								    if(Payment_method_2==null){
+								    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+											    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+												"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+												"WHERE t.date_time = c.date_time "+
+											    "AND t.card_number = c.card_number "+ 
+												"AND p.barcode = c.barcode "+
+												"AND cat.categoryID = p.categoryID "+
+												"AND cu.card_number = t.card_number "+
+												"AND s.storeID = t.storeID "+
+												"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+												"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+												"AND t.payment_method = 'card' "+
+												"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+												"WHERE 1=1 "+
+												";";
+											    rs_1 = statement.executeQuery(sqlSelect);
+						             }
+								    else if(Payment_method_1==null){
+								    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+											    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+												"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+												"WHERE t.date_time = c.date_time "+
+											    "AND t.card_number = c.card_number "+ 
+												"AND p.barcode = c.barcode "+
+												"AND cat.categoryID = p.categoryID "+
+												"AND cu.card_number = t.card_number "+
+												"AND s.storeID = t.storeID "+
+												"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+												"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+												"AND t.payment_method = 'cash' "+
+												"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+												"WHERE 1=1 "+
+												";";
+											    rs_1 = statement.executeQuery(sqlSelect);      
+								    } 
+								    else{
+								    	sqlSelect = "SELECT *FROM(SELECT c.date_time AS date_timee, cu.first_name AS f, cu.last_name AS l, COUNT(c.pieces) AS total_items, SUM(c.pieces*c.price_bought) "+
+											    "AS total_price, cat.category_name AS cati, t.payment_method AS lefta, s.city AS poli, s.street AS dromos "+
+												"FROM product_transaction t, product_contains c, product p, category cat, customer cu, store s "+
+												"WHERE t.date_time = c.date_time "+
+											    "AND t.card_number = c.card_number "+ 
+												"AND p.barcode = c.barcode "+
+												"AND cat.categoryID = p.categoryID "+
+												"AND cu.card_number = t.card_number "+
+												"AND s.storeID = t.storeID "+
+												"AND cat.categoryID = (SELECT categoryID FROM category WHERE category_name = " + "'"+cat+"'"+") "+ 
+												"AND t.storeID = (SELECT storeID FROM store WHERE city = "+"'"+Store[0]+"'"+" AND street = "+"'"+Store[2]+"'"+") "+
+												"GROUP BY t.date_time, t.card_number) AS KOLLAEI "+
+												"WHERE 1=1 "+
+												";";
+											    rs_1 = statement.executeQuery(sqlSelect);
+								}
+							 }
+							}
+						}
+					}
+				}
+			}
 		}
 			
 		}
