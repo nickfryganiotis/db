@@ -166,4 +166,7 @@ AND cu.card_number = t.card_number
 AND s.storeID = t.storeID 
 GROUP BY t.date_time, t.card_number;
 
+CREATE INDEX product_transaction_date_time ON product_transaction (date_time);
+CREATE INDEX price_history_start_date ON price_history (start_date);
+CREATE INDEX product_barcode ON product (barcode);
 
