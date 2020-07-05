@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS market;
 USE market;
-SET GLOBAL time_zone = '+3:00';
+#SET GLOBAL time_zone = '+3:00';
 SET SQL_SAFE_UPDATES = 0;
 CREATE TABLE market.customer(
 			card_number INT AUTO_INCREMENT,
@@ -98,11 +98,13 @@ CREATE TABLE market.product_contains(
 
 CREATE TRIGGER customer_age_calc BEFORE INSERT ON customer 
 	FOR EACH ROW SET NEW.age = YEAR(NOW()) - YEAR(NEW.date_of_birth);
-    
+CREATE TRIGGER customer_age_calc2 BEFORE UPDATE ON customer 
+	FOR EACH ROW SET NEW.age = YEAR(NOW()) - YEAR(NEW.date_of_birth);
 
 
 CREATE TRIGGER sologelato BEFORE INSERT ON product_contains
 	FOR EACH ROW SET NEW.price_bought = (SELECT price FROM price_history WHERE (barcode = NEW.barcode AND start_date <= NEW.date_time AND IFNULL(end_date, '2020-12-31 00-00-00') >= NEW.date_time));
+
     
 DELIMITER $$
 CREATE TRIGGER update_transaction_contains
@@ -119,6 +121,8 @@ BEGIN
 END;
 $$
 DELIMITER ;
+
+
 
 DELIMITER $$
 CREATE TRIGGER auto_update_price
@@ -161,6 +165,5 @@ AND cat.categoryID = p.categoryID
 AND cu.card_number = t.card_number 
 AND s.storeID = t.storeID 
 GROUP BY t.date_time, t.card_number;
-
 
 
